@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+
+# Optional services for future use
+# db:
+#   image: postgres
+#   environment:
+#     POSTGRES_USER: user
+#     POSTGRES_PASSWORD: password
+#     POSTGRES_DB: dbname
+
+# redis:
+#   image: redis
