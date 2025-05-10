@@ -1,77 +1,73 @@
-/* Modern Medical Dashboard Design */
+/* Modern medical dashboard styles */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  background: linear-gradient(135deg, #e0f7fa 0%, #f7fafd 100%);
+  color: #222;
+}
+
 .dashboard-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #e0f7fa 0%, #ffffff 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  justify-content: flex-start;
+  background: linear-gradient(135deg, #e0f7fa 0%, #f7fafd 100%);
+  padding-top: 60px;
 }
 
-.dashboard-header {
-  margin-top: 60px;
-  text-align: center;
-}
-
-.dashboard-header h1 {
-  font-size: 2.8rem;
-  color: #00796b;
+.dashboard-container h1 {
+  font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  color: #006d77;
+  margin-bottom: 40px;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px #b2dfdb33;
 }
 
-.dashboard-subtitle {
-  font-size: 1.2rem;
-  color: #555;
-  margin-bottom: 2rem;
-}
-
-.dashboard-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0 auto;
+.dashboard-links {
   display: flex;
   flex-wrap: wrap;
+  gap: 24px;
   justify-content: center;
-  gap: 2rem;
+  margin-top: 10px;
 }
 
-.dashboard-link {
-  display: block;
-  padding: 1.2rem 2.5rem;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 121, 107, 0.08), 0 1.5px 4px rgba(0,0,0,0.04);
-  color: #00796b;
-  font-size: 1.15rem;
+.dashboard-links a {
+  display: inline-block;
+  background: #fff;
+  color: #006d77;
   font-weight: 500;
+  font-size: 1.1rem;
+  padding: 18px 32px;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px #b2dfdb33;
   text-decoration: none;
   transition: all 0.2s cubic-bezier(.4,0,.2,1);
-  border: 2px solid #b2dfdb;
+  border: 1px solid #b2dfdb44;
+  letter-spacing: 0.5px;
 }
 
-.dashboard-link:hover {
-  background: #b2dfdb;
+.dashboard-links a:hover {
+  background: #e0f7fa;
   color: #004d40;
-  border-color: #00796b;
-  box-shadow: 0 8px 32px rgba(0, 121, 107, 0.16);
+  box-shadow: 0 4px 24px #b2dfdb55;
+  border-color: #4dd0e1;
+  transform: translateY(-2px) scale(1.04);
 }
 
-.dashboard-footer {
-  margin-top: auto;
-  padding: 2rem 0 1rem 0;
-  color: #888;
-  font-size: 1rem;
-  text-align: center;
-}
-
-@media (max-width: 600px) {
-  .dashboard-nav ul {
-    flex-direction: column;
-    gap: 1.2rem;
+@media (max-width: 700px) {
+  .dashboard-container h1 {
+    font-size: 1.5rem;
   }
-  .dashboard-link {
+  .dashboard-links {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .dashboard-links a {
     width: 90vw;
     text-align: center;
+    font-size: 1rem;
+    padding: 14px 0;
   }
 }

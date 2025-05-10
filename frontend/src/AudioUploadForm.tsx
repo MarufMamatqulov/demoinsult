@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './FormMedical.css';
 
-const AudioUploadForm = () => {
+export default function AudioUploadForm() {
+  const { t } = useTranslation();
   const [file, setFile] = useState(null);
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
@@ -32,7 +34,8 @@ const AudioUploadForm = () => {
 
   return (
     <div className="medical-form-container animate-fade-in">
-      <h2 className="form-title">Audio Transcription</h2>
+      <h2 className="form-title">{t('audio.title')}</h2>
+      <p className="form-description">{t('audio.description')}</p>
       <form onSubmit={handleSubmit} className="medical-form space-y-4">
         <div className="form-group">
           <label className="form-label" htmlFor="audioFile">Upload Audio File:</label>
@@ -50,16 +53,15 @@ const AudioUploadForm = () => {
           className="form-submit-btn w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
           disabled={loading || !file}
         >
-          {loading ? 'Uploading...' : 'Analyze Audio'}
+          {loading ? 'Uploading...' : 'Upload'}
         </button>
       </form>
       {result && (
-        <div className="form-result mt-4 p-4 bg-green-100 text-green-800 rounded-md animate-pop-in">
-          Transcription: {result}
+        <div className="result-container">
+          <h3>Result</h3>
+          <p>{result}</p>
         </div>
       )}
     </div>
   );
-};
-
-export default AudioUploadForm;
+}

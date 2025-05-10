@@ -22,7 +22,7 @@ ChartJS.register(
     Legend
 );
 
-const HistoryChart = ({ patientId }) => {
+export default function HistoryChart({ patientId }) {
     const [data, setData] = useState(null);
     const [chartType, setChartType] = useState('blood-pressure');
     const [daysFilter, setDaysFilter] = useState(30);
@@ -180,5 +180,3 @@ const HistoryChart = ({ patientId }) => {
         </div>
     );
 };
-
-export default HistoryChart;

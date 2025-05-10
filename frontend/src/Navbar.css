@@ -1,0 +1,109 @@
+/* Redesigned Navbar for Desktop and Mobile */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #004d99;
+  color: white;
+  font-family: 'Arial', sans-serif;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: white;
+  transition: color 0.3s;
+}
+
+.navbar-links a:hover {
+  color: #ffcc00;
+}
+
+/* Improved Navbar Language Selector Alignment */
+.navbar-language-selector {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin-left: auto;
+  padding-right: 1rem; /* Ensure spacing from the edge */
+}
+
+.navbar-language-selector button {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  background-color: #004d99;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.navbar-language-selector button:hover {
+  background-color: #003366;
+  transform: scale(1.05);
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .navbar-hamburger {
+    display: block;
+    cursor: pointer;
+    margin-bottom: 1rem;
+  }
+
+  .navbar-hamburger div {
+    width: 30px;
+    height: 3px;
+    background-color: white;
+    margin: 5px 0;
+  }
+
+  .navbar-links {
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    background-color: #004d99;
+    padding: 1rem;
+    border-radius: 5px;
+  }
+
+  .navbar-links.mobile-visible {
+    display: flex;
+  }
+
+  .navbar-language-selector {
+    margin-top: 1rem;
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* Spacing between Navbar and Content */
+body {
+  margin-top: 80px; /* Adjust based on Navbar height */
+}

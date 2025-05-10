@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './FormMedical.css';
 
-const VideoUploadForm = () => {
+export default function VideoUploadForm() {
+    const { t } = useTranslation();
     const [file, setFile] = useState(null);
     const [result, setResult] = useState('');
     const [loading, setLoading] = useState(false);
@@ -32,7 +34,8 @@ const VideoUploadForm = () => {
 
     return (
         <div className="medical-form-container animate-fade-in">
-            <h2 className="form-title">Video Upload</h2>
+            <h2 className="form-title">{t('video.title')}</h2>
+            <p className="form-description">{t('video.description')}</p>
             <form className="medical-form" onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label className="form-label">Select Video File</label>
@@ -49,7 +52,7 @@ const VideoUploadForm = () => {
                 </button>
             </form>
             {result && (
-                <div className="form-result animate-pop-in">
+                <div className="result-container">
                     <h3>Result</h3>
                     <p>{result}</p>
                 </div>
@@ -57,5 +60,3 @@ const VideoUploadForm = () => {
         </div>
     );
 };
-
-export default VideoUploadForm;

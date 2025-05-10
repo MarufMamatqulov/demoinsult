@@ -44,5 +44,5 @@ def predict_nihss_severity(input_dict):
     return prediction[0]
 
 if __name__ == "__main__":
-    # Example usage: Train the model
-    train_nihss_model('path_to_your_csv_file.csv')
+    # Update this path when you have the NIHSS dataset
+    train_nihss_model('data/nihss_dataset.csv')

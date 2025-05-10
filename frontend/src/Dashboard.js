@@ -1,29 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import './Dashboard.css';
 
-function Dashboard() {
+const Dashboard = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="dashboard-container">
-      <header className="dashboard-header">
-        <h1>Stroke Rehabilitation AI Platform</h1>
-        <p className="dashboard-subtitle">Empowering Recovery with AI-Driven Insights</p>
-      </header>
-      <nav className="dashboard-nav">
-        <ul>
-          <li><Link to="/phq9" className="dashboard-link">PHQ-9 Analysis</Link></li>
-          <li><Link to="/blood-pressure" className="dashboard-link">Blood Pressure Monitoring</Link></li>
-          <li><Link to="/exercise" className="dashboard-link">Exercise Tracking</Link></li>
-          <li><Link to="/audio-upload" className="dashboard-link">Audio Upload</Link></li>
-          <li><Link to="/video-upload" className="dashboard-link">Video Upload</Link></li>
-          <li><Link to="/history" className="dashboard-link">History and Trends</Link></li>
-        </ul>
-      </nav>
-      <footer className="dashboard-footer">
-        <p>&copy; {new Date().getFullYear()} Stroke Rehabilitation AI Platform</p>
-      </footer>
+      <h1>{t('dashboard.title')}</h1>
+      <div className="dashboard-links">
+        <Link to="/phq9">{t('dashboard.phq9')}</Link>
+        <Link to="/nihss">{t('dashboard.nihss')}</Link>
+        <Link to="/blood-pressure">{t('dashboard.bloodPressure')}</Link>
+        <Link to="/bp-trend">{t('dashboard.bpTrend')}</Link>
+        <Link to="/audio">{t('dashboard.audio')}</Link>
+        <Link to="/video">{t('dashboard.video')}</Link>
+        <Link to="/history">{t('dashboard.history')}</Link>
+      </div>
     </div>
   );
-}
+};
 
 export default Dashboard;

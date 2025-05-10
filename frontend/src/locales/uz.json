@@ -1,0 +1,80 @@
+{
+  "dashboard": {
+    "title": "Insultdan keyingi reabilitatsiya AI platformasi",
+    "phq9": "PHQ-9 depressiyani baholash",
+    "nihss": "NIHSS insult shkalasi",
+    "bloodPressure": "Qon bosimini tahlil qilish",
+    "bpTrend": "Qon bosimi tendensiyasi tahlili",
+    "audio": "Audio kognitsiya/transkripsiya",
+    "video": "Video mashqlarni tahlil qilish",
+    "history": "Tarix va hisobotlar"
+  },
+  "nihss": {
+    "title": "NIHSS insult shkalasi",
+    "description": "Insult og'irligini NIHSS shkalasi yordamida baholang.",
+    "q1": "Hush darajasi",
+    "q1_example": "0: Normal, 1: Biroz uyquchan, 2: Sopor, 3: Koma",
+    "q2": "Eng yaxshi ko'z harakati",
+    "q2_example": "0: Normal, 1: Qisman ko'z harakati falaji, 2: Majburiy og'ish",
+    "q3": "Ko'rish maydoni",
+    "q3_example": "0: Ko'rish yo'qolishi yo'q, 1: Qisman gemianopiya, 2: To'liq gemianopiya, 3: Ikki tomonlama ko'rlik",
+    "q4": "Yuz mushaklari falaji",
+    "q4_example": "0: Normal, 1: Yengil falaj, 2: Qisman falaj, 3: To'liq falaj",
+    "q5": "Qo'l harakati",
+    "q5_example": "0: Harakat yo'q, 1: Harakat, 2: Gravitatsiyaga qarshi harakat, 3: Gravitatsiyaga qarshi harakat yo'q, 4: Harakat yo'q",
+    "q6": "Oyoq harakati",
+    "q6_example": "0: Harakat yo'q, 1: Harakat, 2: Gravitatsiyaga qarshi harakat, 3: Gravitatsiyaga qarshi harakat yo'q, 4: Harakat yo'q",
+    "q7": "Limb ataksiya",
+    "q7_example": "0: Ataksiya yo'q, 1: Bir qo'lda mavjud, 2: Ikki qo'lda mavjud",
+    "q8": "Sezgi",
+    "q8_example": "0: Normal, 1: Yengil yoki o'rtacha sezgi yo'qolishi, 2: Kuchli sezgi yo'qolishi",
+    "q9": "Eng yaxshi til",
+    "q9_example": "0: Afaziya yo'q, 1: Yengil afaziya, 2: Kuchli afaziya, 3: Jim",
+    "q10": "Dizartriya",
+    "q10_example": "0: Normal, 1: Yengil dizartriya, 2: Kuchli dizartriya",
+    "q11": "E'tiborsizlik va beparvolik",
+    "q11_example": "0: E'tiborsizlik yo'q, 1: Qisman e'tiborsizlik, 2: To'liq e'tiborsizlik"
+  },
+  "phq9": {
+    "title": "PHQ-9 depressiyani baholash",
+    "description": "PHQ-9 so'rovnomasi yordamida depressiya og'irligini baholang.",
+    "q1": "Ishlarni bajarishda qiziqish yoki zavqning yo'qligi",
+    "q2": "O'zingizni tushkun, depressiyaga tushgan yoki umidsiz his qilish",
+    "q3": "Uyquga ketishda muammo yoki juda ko'p uxlash",
+    "q4": "O'zingizni charchagan yoki energiya yetishmasligini his qilish",
+    "q5": "Yomon ishtaha yoki ortiqcha ovqatlanish",
+    "q6": "O'zingizni yomon his qilish yoki muvaffaqiyatsizlikka uchraganlik hissi",
+    "q7": "Diqqatni jamlashda muammo",
+    "q8": "Sekin harakat qilish yoki bezovtalik",
+    "q9": "O'z-o'ziga zarar yetkazish yoki o'z joniga qasd qilish haqida o'ylash",
+    "opt1": "Umuman yo'q",
+    "opt2": "Bir necha kun",
+    "opt3": "Kunlarning yarmidan ko'pi",
+    "opt4": "Har kuni"
+  },
+  "bpTrend": {
+    "title": "Qon bosimi tendensiyasi tahlili",
+    "description": "Qon bosimi tendensiyalarini vaqt o'tishi bilan tahlil qiling."
+  },
+  "bloodPressure": {
+    "title": "Qon bosimini kuzatish",
+    "description": "Sistolik va diastolik qiymatlarni kiritib, qon bosimini kuzatib boring."
+  },
+  "audio": {
+    "title": "Audio transkripsiya",
+    "description": "Audio faylni yuklab, uning mazmunini transkripsiya qiling va tahlil qiling."
+  },
+  "video": {
+    "title": "Video mashqlarni tahlil qilish",
+    "description": "Mashqlarni bajarishni tahlil qilish uchun video faylni yuklang."
+  },
+  "footer": {
+    "copyright": "&copy; 2025 Insultdan keyingi reabilitatsiya AI platformasi. Barcha huquqlar himoyalangan.",
+    "tagline": "AI vositalari bilan tiklanishni kuchaytirish.",
+    "links": {
+      "about": "Biz haqimizda",
+      "contact": "Biz bilan bog'lanish",
+      "faq": "Ko'p so'raladigan savollar"
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "dashboard": {
+    "title": "Stroke Rehabilitation AI Platform",
+    "phq9": "PHQ-9 Depression Assessment",
+    "nihss": "NIHSS Stroke Scale",
+    "bloodPressure": "Blood Pressure Analysis",
+    "bpTrend": "BP Trend Analysis",
+    "audio": "Audio Cognition/Transcription",
+    "video": "Video Exercise Analysis",
+    "history": "History & Reports"
+  },
+  "nihss": {
+    "title": "NIHSS Stroke Scale",
+    "description": "Assess stroke severity using the NIHSS scale.",
+    "q1": "Level of consciousness",
+    "q1_example": "0: Normal, 1: Slightly drowsy, 2: Stupor, 3: Coma",
+    "q2": "Best gaze",
+    "q2_example": "0: Normal, 1: Partial gaze palsy, 2: Forced deviation",
+    "q3": "Visual fields",
+    "q3_example": "0: No visual loss, 1: Partial hemianopia, 2: Complete hemianopia, 3: Bilateral blindness",
+    "q4": "Facial palsy",
+    "q4_example": "0: Normal, 1: Minor paralysis, 2: Partial paralysis, 3: Complete paralysis",
+    "q5": "Motor arm",
+    "q5_example": "0: No drift, 1: Drift, 2: Some effort against gravity, 3: No effort against gravity, 4: No movement",
+    "q6": "Motor leg",
+    "q6_example": "0: No drift, 1: Drift, 2: Some effort against gravity, 3: No effort against gravity, 4: No movement",
+    "q7": "Limb ataxia",
+    "q7_example": "0: No ataxia, 1: Present in one limb, 2: Present in two limbs",
+    "q8": "Sensory",
+    "q8_example": "0: Normal, 1: Mild to moderate sensory loss, 2: Severe sensory loss",
+    "q9": "Best language",
+    "q9_example": "0: No aphasia, 1: Mild aphasia, 2: Severe aphasia, 3: Mute",
+    "q10": "Dysarthria",
+    "q10_example": "0: Normal, 1: Mild dysarthria, 2: Severe dysarthria",
+    "q11": "Extinction and inattention",
+    "q11_example": "0: No neglect, 1: Partial neglect, 2: Complete neglect"
+  },
+  "phq9": {
+    "title": "PHQ-9 Depression Assessment",
+    "description": "Evaluate depression severity using the PHQ-9 questionnaire.",
+    "q1": "Little interest or pleasure in doing things",
+    "q2": "Feeling down, depressed, or hopeless",
+    "q3": "Trouble falling or staying asleep, or sleeping too much",
+    "q4": "Feeling tired or having little energy",
+    "q5": "Poor appetite or overeating",
+    "q6": "Feeling bad about yourself or that you are a failure",
+    "q7": "Trouble concentrating on things",
+    "q8": "Moving or speaking slowly or being restless",
+    "q9": "Thoughts of self-harm or suicide",
+    "opt1": "Not at all",
+    "opt2": "Several days",
+    "opt3": "More than half the days",
+    "opt4": "Nearly every day"
+  },
+  "bpTrend": {
+    "title": "Blood Pressure Trend Analysis",
+    "description": "Analyze blood pressure trends over time."
+  },
+  "bloodPressure": {
+    "title": "Blood Pressure Monitoring",
+    "description": "Monitor blood pressure by entering systolic and diastolic values."
+  },
+  "audio": {
+    "title": "Audio Transcription",
+    "description": "Upload an audio file to transcribe and analyze its content."
+  },
+  "video": {
+    "title": "Video Exercise Analysis",
+    "description": "Upload a video file to analyze exercise performance."
+  },
+  "footer": {
+    "copyright": "&copy; 2025 Stroke Rehabilitation AI Platform. All rights reserved.",
+    "tagline": "Empowering recovery with advanced AI tools.",
+    "links": {
+      "about": "About Us",
+      "contact": "Contact Us",
+      "faq": "FAQ"
+    }
+  }
+}

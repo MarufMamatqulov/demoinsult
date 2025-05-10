@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './FormMedical.css';
 
-const BloodPressureForm = () => {
+export default function BloodPressureForm() {
+  const { t } = useTranslation();
   const [systolic, setSystolic] = useState('');
   const [diastolic, setDiastolic] = useState('');
   const [result, setResult] = useState('');
@@ -26,8 +28,9 @@ const BloodPressureForm = () => {
   };
 
   return (
-    <div className="medical-form-container animate-fade-in">
-      <h2 className="form-title">Blood Pressure Monitoring</h2>
+    <div className="medical-form-container animate-fade-in blood-pressure-form">
+      <h2 className="form-title">{t('bloodPressure.title')}</h2>
+      <p className="form-description">{t('bloodPressure.description')}</p>
       <form className="medical-form" onSubmit={handleSubmit}>
         <div className="form-group">
           <label className="form-label">Systolic (mmHg)</label>
@@ -54,17 +57,15 @@ const BloodPressureForm = () => {
           />
         </div>
         <button className="form-submit-btn" type="submit" disabled={loading}>
-          {loading ? 'Analyzing...' : 'Analyze'}
+          {loading ? 'Analyzing...' : 'Submit'}
         </button>
       </form>
       {result && (
-        <div className="form-result animate-pop-in">
+        <div className="result-container">
           <h3>Result</h3>
           <p>{result}</p>
         </div>
       )}
     </div>
   );
-};
-
-export default BloodPressureForm;
+}

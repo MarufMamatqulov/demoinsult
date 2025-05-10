@@ -1,28 +1,30 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './FormMedical.css';
 
-const Phq9Form = () => {
+export default function Phq9Form() {
+  const { t } = useTranslation();
   const [answers, setAnswers] = useState({ q1: 0, q2: 0, q3: 0, q4: 0, q5: 0, q6: 0, q7: 0, q8: 0, q9: 0 });
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const questions = [
-    'Little interest or pleasure in doing things',
-    'Feeling down, depressed, or hopeless',
-    'Trouble falling or staying asleep, or sleeping too much',
-    'Feeling tired or having little energy',
-    'Poor appetite or overeating',
-    'Feeling bad about yourself — or that you are a failure or have let yourself or your family down',
-    'Trouble concentrating on things, such as reading the newspaper or watching television',
-    'Moving or speaking so slowly that other people could have noticed? Or the opposite — being so fidgety or restless that you have been moving around a lot more than usual',
-    'Thoughts that you would be better off dead or of hurting yourself in some way'
+    t('phq9.q1'),
+    t('phq9.q2'),
+    t('phq9.q3'),
+    t('phq9.q4'),
+    t('phq9.q5'),
+    t('phq9.q6'),
+    t('phq9.q7'),
+    t('phq9.q8'),
+    t('phq9.q9')
   ];
 
   const options = [
-    'Not at all',
-    'Several days',
-    'More than half the days',
-    'Nearly every day'
+    t('phq9.opt1'),
+    t('phq9.opt2'),
+    t('phq9.opt3'),
+    t('phq9.opt4')
   ];
 
   const handleChange = (q, value) => {
@@ -49,40 +51,36 @@ const Phq9Form = () => {
 
   return (
     <div className="medical-form-container animate-fade-in">
-      <h2 className="form-title">PHQ-9 Depression Assessment</h2>
+      <h2 className="form-title">{t('phq9.title')}</h2>
+      <p className="form-description">
+        {t('phq9.description')}
+      </p>
       <form className="medical-form" onSubmit={handleSubmit}>
-        {questions.map((q, idx) => (
-          <div className="form-group" key={q}>
-            <label className="form-label">{idx + 1}. {q}</label>
-            <div className="form-options">
-              {options.map((opt, v) => (
-                <label key={opt} className="form-radio">
-                  <input
-                    type="radio"
-                    name={`q${idx + 1}`}
-                    value={v}
-                    checked={answers[`q${idx + 1}`] === v}
-                    onChange={() => handleChange(`q${idx + 1}`, v)}
-                    required
-                  />
-                  <span>{opt}</span>
-                </label>
+        {questions.map((question, idx) => (
+          <div className="form-group" key={idx}>
+            <label className="form-label">{question}</label>
+            <select
+              className="form-input"
+              value={answers[`q${idx + 1}`]}
+              onChange={(e) => handleChange(`q${idx + 1}`, parseInt(e.target.value))}
+              required
+            >
+              {options.map((option, value) => (
+                <option key={value} value={value}>{option}</option>
               ))}
-            </div>
+            </select>
           </div>
         ))}
         <button className="form-submit-btn" type="submit" disabled={loading}>
-          {loading ? 'Analyzing...' : 'Analyze'}
+          {loading ? 'Analyzing...' : 'Submit'}
         </button>
       </form>
       {result && (
-        <div className="form-result animate-pop-in">
+        <div className="result-container">
           <h3>Result</h3>
           <p>{result}</p>
         </div>
       )}
     </div>
   );
-};
-
-export default Phq9Form;
+}

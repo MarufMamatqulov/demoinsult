@@ -10,6 +10,7 @@ from backend.api.alerts_api import router as alerts_router
 from backend.api.audio_test_api import router as audio_router
 from backend.api.video_test_api import router as video_router
 from backend.api.report_api import router as report_router
+from backend.api.bp_trend import router as bp_trend_router
 
 app = FastAPI()
 
@@ -57,3 +58,4 @@ app.include_router(alerts_router, prefix="/alerts")
 app.include_router(audio_router, prefix="/audio")
 app.include_router(video_router, prefix="/video")
 app.include_router(report_router, prefix="/report")
+app.include_router(bp_trend_router)

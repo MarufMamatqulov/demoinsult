@@ -11,8 +11,8 @@ import joblib
 # Load and preprocess dataset
 def load_and_preprocess_data(file_path):
     data = pd.read_csv(file_path)
-    X = data[[f'q{i}' for i in range(1, 10)]]
-    y = data[[f'q{i}' for i in range(1, 10)]].sum(axis=1).apply(categorize_depression)
+    X = data[[f'q{i}' for i in range(1, 10)]].fillna(data[[f'q{i}' for i in range(1, 10)]].mean())
+    y = X.sum(axis=1).apply(categorize_depression)
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
     return X_scaled, y, scaler
