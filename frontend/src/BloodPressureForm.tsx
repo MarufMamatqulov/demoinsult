@@ -14,13 +14,13 @@ export default function BloodPressureForm() {
     setLoading(true);
     setResult('');
     try {
-      const response = await fetch('/api/blood-pressure/analyze', {
+      const response = await fetch('http://localhost:8000/bp/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ systolic, diastolic })
       });
       const data = await response.json();
-      setResult(data.result);
+      setResult(data.message);
     } catch (err) {
       setResult('Error analyzing blood pressure.');
     }

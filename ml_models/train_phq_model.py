@@ -24,17 +24,19 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 model = RandomForestClassifier(random_state=42)
 model.fit(X_train, y_train)
 
+# Update the save path to the ml_models directory
+model_save_path = os.path.join(os.path.dirname(__file__), 'phq_model.pkl')
+
 # Save the trained model
-# Debugging the save process
 print("Attempting to save the model...")
 try:
-    joblib.dump(model, "phq_model.pkl")
-    print("Model saved successfully as phq_model.pkl")
+    joblib.dump(model, model_save_path)
+    print(f"Model saved successfully as {model_save_path}")
 except Exception as e:
     print(f"Error saving model: {e}")
 
 # Explicitly confirm the file save operation
-if os.path.exists("phq_model.pkl"):
-    print("Model file saved successfully as phq_model.pkl")
+if os.path.exists(model_save_path):
+    print(f"Model file saved successfully as {model_save_path}")
 else:
     print("Error: Model file not saved correctly.")

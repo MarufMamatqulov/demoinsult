@@ -1,12 +1,11 @@
-{
-  "dashboard": {
+{  "dashboard": {
     "title": "Insultdan keyingi reabilitatsiya AI platformasi",
     "phq9": "PHQ-9 depressiyani baholash",
     "nihss": "NIHSS insult shkalasi",
     "bloodPressure": "Qon bosimini tahlil qilish",
     "bpTrend": "Qon bosimi tendensiyasi tahlili",
-    "audio": "Audio kognitsiya/transkripsiya",
-    "video": "Video mashqlarni tahlil qilish",
+    "speechHearing": "Nutq va Eshitish Baholash",
+    "movement": "Harakat Baholash",
     "history": "Tarix va hisobotlar"
   },
   "nihss": {
@@ -67,8 +66,7 @@
   "video": {
     "title": "Video mashqlarni tahlil qilish",
     "description": "Mashqlarni bajarishni tahlil qilish uchun video faylni yuklang."
-  },
-  "footer": {
+  },  "footer": {
     "copyright": "&copy; 2025 Insultdan keyingi reabilitatsiya AI platformasi. Barcha huquqlar himoyalangan.",
     "tagline": "AI vositalari bilan tiklanishni kuchaytirish.",
     "links": {
@@ -76,5 +74,9 @@
       "contact": "Biz bilan bog'lanish",
       "faq": "Ko'p so'raladigan savollar"
     }
+  },
+  "errors": {
+    "assessment": "Baholashni qayta ishlashda xatolik yuz berdi. Iltimos, qaytadan urinib ko'ring.",
+    "connection": "Ulanish xatosi. Internet ulanishingizni tekshiring."
   }
 }

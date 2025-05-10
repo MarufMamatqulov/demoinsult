@@ -1,16 +1,20 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import './Footer.css';
 
 const Footer = () => {
+  const { t } = useTranslation();
+  
   return (
     <footer className="footer">
       <div className="footer-content">
-        <p>&copy; 2025 Stroke Rehabilitation AI Platform. All rights reserved.</p>
-        <p>Empowering recovery with advanced AI tools.</p>
+        <p dangerouslySetInnerHTML={{ __html: t('footer.copyright') }}></p>
+        <p>{t('footer.tagline')}</p>
         <ul className="footer-links">
-          <li><a href="/about">About Us</a></li>
-          <li><a href="/contact">Contact Us</a></li>
-          <li><a href="/faq">FAQ</a></li>
+          <li><Link to="/about">{t('footer.links.about')}</Link></li>
+          <li><Link to="/contact">{t('footer.links.contact')}</Link></li>
+          <li><Link to="/faq">{t('footer.links.faq')}</Link></li>
         </ul>
       </div>
     </footer>

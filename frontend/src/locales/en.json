@@ -1,12 +1,11 @@
-{
-  "dashboard": {
+{  "dashboard": {
     "title": "Stroke Rehabilitation AI Platform",
     "phq9": "PHQ-9 Depression Assessment",
     "nihss": "NIHSS Stroke Scale",
     "bloodPressure": "Blood Pressure Analysis",
     "bpTrend": "BP Trend Analysis",
-    "audio": "Audio Cognition/Transcription",
-    "video": "Video Exercise Analysis",
+    "speechHearing": "Speech & Hearing Assessment",
+    "movement": "Movement Assessment",
     "history": "History & Reports"
   },
   "nihss": {
@@ -67,8 +66,7 @@
   "video": {
     "title": "Video Exercise Analysis",
     "description": "Upload a video file to analyze exercise performance."
-  },
-  "footer": {
+  },  "footer": {
     "copyright": "&copy; 2025 Stroke Rehabilitation AI Platform. All rights reserved.",
     "tagline": "Empowering recovery with advanced AI tools.",
     "links": {
@@ -76,5 +74,9 @@
       "contact": "Contact Us",
       "faq": "FAQ"
     }
+  },
+  "errors": {
+    "assessment": "Error processing assessment. Please try again.",
+    "connection": "Connection error. Please check your internet connection."
   }
 }

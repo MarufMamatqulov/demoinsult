@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './Navbar.css';
+import './Dropdown.css';
 
 const Navbar = () => {
   const { i18n } = useTranslation();
@@ -22,9 +23,18 @@ const Navbar = () => {
         <div></div>
         <div></div>
         <div></div>
-      </div>
-      <ul className={`navbar-links ${isMobileMenuOpen ? 'mobile-visible' : 'mobile-hidden'}`}>
+      </div>      <ul className={`navbar-links ${isMobileMenuOpen ? 'mobile-visible' : 'mobile-hidden'}`}>
         <li><Link to="/">Home</Link></li>
+        <li className="dropdown">
+          <span className="dropdown-toggle">Assessments</span>
+          <div className="dropdown-menu">
+            <Link to="/blood-pressure">Blood Pressure</Link>
+            <Link to="/speech-hearing-assessment">Speech & Hearing</Link>
+            <Link to="/movement-assessment">Movement</Link>
+            <Link to="/phq9">PHQ-9</Link>
+            <Link to="/nihss">NIHSS</Link>
+          </div>
+        </li>
         <li><Link to="/rehabilitation">Rehabilitation Analysis</Link></li>
         <li><Link to="/about">About Us</Link></li>
         <li><Link to="/faq">FAQ</Link></li>
