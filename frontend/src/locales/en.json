@@ -1,4 +1,5 @@
-{  "dashboard": {
+{  
+  "dashboard": {
     "title": "Stroke Rehabilitation AI Platform",
     "phq9": "PHQ-9 Depression Assessment",
     "nihss": "NIHSS Stroke Scale",
@@ -7,6 +8,22 @@
     "speechHearing": "Speech & Hearing Assessment",
     "movement": "Movement Assessment",
     "history": "History & Reports"
+  },
+  "assessments": {
+    "speech_hearing": "Speech & Hearing Assessment",
+    "movement": "Movement Assessment", 
+    "patientInfo": "Patient Information",
+    "patientName": "Patient Name",
+    "patientAge": "Patient Age",
+    "relationship": "Your relationship to patient",
+    "submit": "Submit Assessment",
+    "export": "Export as PDF",
+    "processing": "Processing...",
+    "exporting": "Exporting...",
+    "results": "Assessment Results",
+    "recommendationsTitle": "Recommendations",
+    "exportSuccess": "PDF successfully generated. Check the exports folder.",
+    "exportError": "Error exporting PDF. Please try again."
   },
   "nihss": {
     "title": "NIHSS Stroke Scale",
@@ -74,9 +91,21 @@
       "contact": "Contact Us",
       "faq": "FAQ"
     }
-  },
-  "errors": {
+  },  "errors": {
     "assessment": "Error processing assessment. Please try again.",
     "connection": "Connection error. Please check your internet connection."
+  },
+  "chat": {
+    "title": "Stroke Rehabilitation Assistant",
+    "welcome": "Hello! I'm your Stroke Rehab AI assistant. How can I help you today?",
+    "placeholder": "Type your question here...",
+    "send": "Send",
+    "clear": "Clear Chat",
+    "getAdvice": "Get Assessment Advice",
+    "error": "Sorry, I encountered an error. Please try again later.",
+    "adviceIntro": "Here's my detailed advice based on your assessment results:",
+    "adviceError": "Sorry, I couldn't generate advice right now. Please try again later.",
+    "additionalAdvice": "Additional Advice",
+    "disclaimer": "This AI assistant provides general information and is not a replacement for professional medical advice."
   }
 }

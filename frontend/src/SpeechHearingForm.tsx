@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './FormMedical.css';
+import { getPatientInfoLabels, getFormActionText, getLocalizedMessages } from './utils/languageUtils';
+import { useAssessment } from './AssessmentContext.js';
 
 const questions = {
   en: [
@@ -42,6 +44,19 @@ const questions = {
     "8. Может ли пациент различать разные голоса (мужской/женский)?",
     "9. Может ли пациент понимать речь в шумной обстановке?",
     "10. Отвечает ли пациент правильно на вопросы без недопонимания?"
+  ],
+  uz: [
+    // Uzbek translation
+    "1. Bemor aniq va to'g'ri talaffuz bilan gapira oladimi?",
+    "2. Bemor qiynalmasdan to'liq gaplarni shakllantira oladimi?",
+    "3. Bemor normal nutq tezligi va ritmini saqlab qola oladimi?",
+    "4. Bemor suhbat paytida tegishli so'zlarni eslash va ishlatish qobiliyatiga egami?",
+    "5. Bemorning nutqini notanish odamlar osonlikcha tushuna oladimi?",
+    "6. Bemor takrorlashni so'ramasdan oddiy suhbatni eshita oladimi?",
+    "7. Bemor boshqa xonadan kelayotgan ovozlarni (eshik qo'ng'irog'i, telefon) eshita oladimi?",
+    "8. Bemor turli ovozlarni (erkak/ayol) farqlay oladimi?",
+    "9. Bemor shovqinli muhitda nutqni tushuna oladimi?",
+    "10. Bemor savollarga noto'g'ri tushunmasdan tegishli javob beradimi?"
   ]
 };
 
@@ -63,6 +78,12 @@ const scoreDescriptions = {
     "1 - Серьезные затруднения",
     "2 - Умеренные затруднения",
     "3 - Без затруднений"
+  ],
+  uz: [
+    "0 - Bajara olmaydi",
+    "1 - Jiddiy qiyinchilik",
+    "2 - O'rtacha qiyinchilik",
+    "3 - Qiyinchilik yo'q"
   ]
 };
 
@@ -74,20 +95,25 @@ export default function SpeechHearingForm() {
   const [scores, setScores] = useState(Array(10).fill(0));
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
+  const { setAssessmentData: setContextAssessmentData } = useAssessment();
 
   const currentLanguage = i18n.language.startsWith('es') ? 'es' : 
-                          i18n.language.startsWith('ru') ? 'ru' : 'en';
+                          i18n.language.startsWith('ru') ? 'ru' : 
+                          i18n.language.startsWith('uz') ? 'uz' : 'en';
 
   const handleScoreChange = (index, value) => {
     const newScores = [...scores];
     newScores[index] = parseInt(value);
     setScores(newScores);
   };
-
+  const [assessmentData, setAssessmentData] = useState(null);
+  const [exportLoading, setExportLoading] = useState(false);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setResult('');
+    setAssessmentData(null);
 
     // Prepare the data
     const questionsData = scores.map((score, index) => ({
@@ -109,6 +135,27 @@ export default function SpeechHearingForm() {
       });
 
       const data = await response.json();
+        
+      // Save assessment data for PDF export and chat integration
+      const assessmentData = {
+        ...data,
+        patient_name: patientName,
+        patient_age: parseInt(patientAge),
+        assessmentType: "speech-hearing",
+        assessmentResults: {
+          speech_score: data.speech_score,
+          hearing_score: data.hearing_score,
+          total_score: data.total_score,
+          speech_level: data.speech_level,
+          hearing_level: data.hearing_level,
+          overall_level: data.overall_level
+        }
+      };
+      
+      setAssessmentData(assessmentData);
+      
+      // Make the assessment data available to the floating chat
+      setContextAssessmentData(assessmentData);
       
       // Format the result
       let formattedResult = '';
@@ -129,6 +176,15 @@ export default function SpeechHearingForm() {
           <p><strong>Оценка слуха:</strong> ${data.hearing_score}/15 (${data.hearing_level})</p>
           <p><strong>Общая оценка:</strong> ${data.total_score}/30 (${data.overall_level})</p>
           <h3>Рекомендации ИИ:</h3>
+          <p>${data.recommendations.replace(/\n/g, '<br>')}</p>
+        `;
+      } else if (currentLanguage === 'uz') {
+        formattedResult = `
+          <h3>Natijalar:</h3>
+          <p><strong>Nutq bahosi:</strong> ${data.speech_score}/15 (${data.speech_level})</p>
+          <p><strong>Eshitish bahosi:</strong> ${data.hearing_score}/15 (${data.hearing_level})</p>
+          <p><strong>Umumiy baho:</strong> ${data.total_score}/30 (${data.overall_level})</p>
+          <h3>AI tavsiyalari:</h3>
           <p>${data.recommendations.replace(/\n/g, '<br>')}</p>
         `;
       } else {
@@ -167,29 +223,43 @@ export default function SpeechHearingForm() {
     }
     return "Complete this form to assess the patient's speech and hearing abilities. This assessment should be completed by a relative or caregiver.";
   };
-
-  const getPatientNameLabel = () => {
-    if (currentLanguage === 'es') return "Nombre del Paciente";
-    if (currentLanguage === 'ru') return "Имя Пациента";
-    return "Patient Name";
-  };
-
-  const getPatientAgeLabel = () => {
-    if (currentLanguage === 'es') return "Edad del Paciente";
-    if (currentLanguage === 'ru') return "Возраст Пациента";
-    return "Patient Age";
-  };
-
-  const getRelationshipLabel = () => {
-    if (currentLanguage === 'es') return "Su relación con el paciente";
-    if (currentLanguage === 'ru') return "Ваше отношение к пациенту";
-    return "Your relationship to patient";
-  };
-
-  const getSubmitButtonText = () => {
-    if (currentLanguage === 'es') return "Enviar Evaluación";
-    if (currentLanguage === 'ru') return "Отправить Оценку";
-    return "Submit Assessment";
+  // Using shared language utilities
+  const patientInfoLabels = getPatientInfoLabels(currentLanguage);
+  const formActionText = getFormActionText(currentLanguage);
+    const handleExportPDF = async () => {
+    if (!assessmentData) return;
+    
+    setExportLoading(true);
+    
+    try {      const response = await fetch('http://localhost:8000/export/assessment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          patient_name: patientName,
+          patient_age: parseInt(patientAge),
+          assessor_relationship: relationship,
+          assessment_type: "speech_hearing",
+          assessment_data: assessmentData,
+          language: currentLanguage
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // Show success message using shared language utilities
+        const messages = getLocalizedMessages(currentLanguage);
+        alert(messages.pdfSuccess);
+      } else {
+        throw new Error(data.message || 'Failed to export PDF');
+      }
+    } catch (err) {
+      // Show error message using shared language utilities
+      const messages = getLocalizedMessages(currentLanguage);
+      alert(messages.pdfError);
+    }
+    
+    setExportLoading(false);
   };
 
   return (
@@ -198,8 +268,7 @@ export default function SpeechHearingForm() {
       <p className="form-description">{getFormDescription()}</p>
       
       <form className="medical-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label className="form-label">{getPatientNameLabel()}</label>
+        <div className="form-group">          <label className="form-label">{patientInfoLabels.patientName}</label>
           <input
             className="form-input"
             type="text"
@@ -210,7 +279,7 @@ export default function SpeechHearingForm() {
         </div>
         
         <div className="form-group">
-          <label className="form-label">{getPatientAgeLabel()}</label>
+          <label className="form-label">{patientInfoLabels.patientAge}</label>
           <input
             className="form-input"
             type="number"
@@ -223,7 +292,7 @@ export default function SpeechHearingForm() {
         </div>
         
         <div className="form-group">
-          <label className="form-label">{getRelationshipLabel()}</label>
+          <label className="form-label">{patientInfoLabels.relationship}</label>
           <input
             className="form-input"
             type="text"
@@ -297,20 +366,24 @@ export default function SpeechHearingForm() {
           type="submit" 
           className="submit-button" 
           disabled={loading}
-        >
-          {loading ? 
-            (currentLanguage === 'es' ? 'Procesando...' : 
-             currentLanguage === 'ru' ? 'Обработка...' : 
-             'Processing...') : 
-            getSubmitButtonText()}
+        >          {loading ? formActionText.processing : formActionText.submit}
         </button>
       </form>
-      
-      {result && (
-        <div 
-          className="result-container animate-fade-in"
-          dangerouslySetInnerHTML={{ __html: result }}
-        ></div>
+        {result && (
+        <div className="result-container animate-fade-in">
+          <div dangerouslySetInnerHTML={{ __html: result }}></div>
+          
+          {assessmentData && (
+            <div className="export-section">
+              <button 
+                className="export-button"
+                onClick={handleExportPDF}
+                disabled={exportLoading}
+              >                {exportLoading ? formActionText.exporting : formActionText.exportPDF}
+              </button>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './FormMedical.css';
+import { getPatientInfoLabels, getFormActionText, getLocalizedMessages } from './utils/languageUtils';
+import { useAssessment } from './AssessmentContext.js';
 
 const questions = {
   en: [
@@ -36,8 +38,7 @@ const questions = {
     "11. ¿Puede el paciente girar su cuerpo sin perder el equilibrio?",
     "12. ¿Puede el paciente caminar en línea recta?",
     "13. ¿Puede el paciente sentarse lentamente sin caerse?"
-  ],
-  ru: [
+  ],  ru: [
     // Russian translation
     "1. Может ли пациент поднять руки над головой?",
     "2. Может ли пациент держать чашку без дрожания?",
@@ -52,6 +53,22 @@ const questions = {
     "11. Может ли пациент повернуться всем телом, не теряя равновесия?",
     "12. Может ли пациент ходить по прямой линии?",
     "13. Может ли пациент медленно садиться, не падая?"
+  ],
+  uz: [
+    // Uzbek translation
+    "1. Bemor qo'llarini boshi ustiga ko'tara oladimi?",
+    "2. Bemor qaltiramasdan chashkani ushlab tura oladimi?",
+    "3. Bemor ko'ylak yoki bluzka tugmalarini qadash qobiliyatiga egami?",
+    "4. Bemor mayda narsalarni (tangalar, qisqichlar) tera oladimi?",
+    "5. Bemor tushunarli yoza oladimi?",
+    "6. Bemor yordam olmay o'tirgan holatdan tura oladimi?",
+    "7. Bemor yordam olmasdan yura oladimi?",
+    "8. Bemor zinapoyadan ko'tarilishi va tushishi mumkinmi?",
+    "9. Bemor yurganda tizzalarini baland ko'tara oladimi?",
+    "10. Bemor bir oyoqda 5 soniya davomida tura oladimi?",
+    "11. Bemor muvozanatni yo'qotmasdan tanasini aylantirib tura oladimi?",
+    "12. Bemor to'g'ri chiziq bo'ylab yura oladimi?",
+    "13. Bemor yiqilmasdan sekin o'tira oladimi?"
   ]
 };
 
@@ -73,6 +90,12 @@ const scoreDescriptions = {
     "1 - Серьезные затруднения",
     "2 - Умеренные затруднения",
     "3 - Без затруднений"
+  ],
+  uz: [
+    "0 - Bajara olmaydi",
+    "1 - Jiddiy qiyinchilik",
+    "2 - O'rtacha qiyinchilik",
+    "3 - Qiyinchilik yo'q"
   ]
 };
 
@@ -84,20 +107,25 @@ export default function MovementForm() {
   const [scores, setScores] = useState(Array(13).fill(0));
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
+  const { setAssessmentData: setContextAssessmentData } = useAssessment();
 
   const currentLanguage = i18n.language.startsWith('es') ? 'es' : 
-                          i18n.language.startsWith('ru') ? 'ru' : 'en';
+                          i18n.language.startsWith('ru') ? 'ru' : 
+                          i18n.language.startsWith('uz') ? 'uz' : 'en';
 
   const handleScoreChange = (index, value) => {
     const newScores = [...scores];
     newScores[index] = parseInt(value);
     setScores(newScores);
   };
-
+  const [assessmentData, setAssessmentData] = useState(null);
+  const [exportLoading, setExportLoading] = useState(false);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setResult('');
+    setAssessmentData(null);
 
     // Prepare the data
     const questionsData = scores.map((score, index) => ({
@@ -118,7 +146,28 @@ export default function MovementForm() {
         })
       });
 
-      const data = await response.json();
+      const data = await response.json();      // Save assessment data for PDF export and chat integration
+      const assessmentData = {
+        ...data,
+        patient_name: patientName,
+        patient_age: parseInt(patientAge),
+        assessmentType: "movement",
+        assessmentResults: {
+          upper_limb_score: data.upper_limb_score,
+          lower_limb_score: data.lower_limb_score,
+          balance_score: data.balance_score,
+          total_score: data.total_score,
+          upper_limb_level: data.upper_limb_level,
+          lower_limb_level: data.lower_limb_level,
+          balance_level: data.balance_level,
+          overall_level: data.overall_level
+        }
+      };
+      
+      setAssessmentData(assessmentData);
+      
+      // Make assessment data available for the floating chat through context
+      setContextAssessmentData(assessmentData);
       
       // Format the result
       let formattedResult = '';
@@ -141,6 +190,16 @@ export default function MovementForm() {
           <p><strong>Оценка равновесия:</strong> ${data.balance_score}/12 (${data.balance_level})</p>
           <p><strong>Общая оценка:</strong> ${data.total_score}/39 (${data.overall_level})</p>
           <h3>Рекомендации ИИ:</h3>
+          <p>${data.recommendations.replace(/\n/g, '<br>')}</p>
+        `;
+      } else if (currentLanguage === 'uz') {
+        formattedResult = `
+          <h3>Natijalar:</h3>
+          <p><strong>Yuqori a'zo bahosi:</strong> ${data.upper_limb_score}/15 (${data.upper_limb_level})</p>
+          <p><strong>Quyi a'zo bahosi:</strong> ${data.lower_limb_score}/12 (${data.lower_limb_level})</p>
+          <p><strong>Muvozanat bahosi:</strong> ${data.balance_score}/12 (${data.balance_level})</p>
+          <p><strong>Umumiy baho:</strong> ${data.total_score}/39 (${data.overall_level})</p>
+          <h3>AI tavsiyalari:</h3>
           <p>${data.recommendations.replace(/\n/g, '<br>')}</p>
         `;
       } else {
@@ -180,29 +239,43 @@ export default function MovementForm() {
     }
     return "Complete this form to assess the patient's movement abilities. This assessment should be completed by a relative or caregiver.";
   };
-
-  const getPatientNameLabel = () => {
-    if (currentLanguage === 'es') return "Nombre del Paciente";
-    if (currentLanguage === 'ru') return "Имя Пациента";
-    return "Patient Name";
-  };
-
-  const getPatientAgeLabel = () => {
-    if (currentLanguage === 'es') return "Edad del Paciente";
-    if (currentLanguage === 'ru') return "Возраст Пациента";
-    return "Patient Age";
-  };
-
-  const getRelationshipLabel = () => {
-    if (currentLanguage === 'es') return "Su relación con el paciente";
-    if (currentLanguage === 'ru') return "Ваше отношение к пациенту";
-    return "Your relationship to patient";
-  };
-
-  const getSubmitButtonText = () => {
-    if (currentLanguage === 'es') return "Enviar Evaluación";
-    if (currentLanguage === 'ru') return "Отправить Оценку";
-    return "Submit Assessment";
+  // Using shared language utilities
+  const patientInfoLabels = getPatientInfoLabels(currentLanguage);
+  const formActionText = getFormActionText(currentLanguage);
+    const handleExportPDF = async () => {
+    if (!assessmentData) return;
+    
+    setExportLoading(true);
+    
+    try {      const response = await fetch('http://localhost:8000/export/assessment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          patient_name: patientName,
+          patient_age: parseInt(patientAge),
+          assessor_relationship: relationship,
+          assessment_type: "movement",
+          assessment_data: assessmentData,
+          language: currentLanguage
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // Show success message using shared language utilities
+        const messages = getLocalizedMessages(currentLanguage);
+        alert(messages.pdfSuccess);
+      } else {
+        throw new Error(data.message || 'Failed to export PDF');
+      }
+    } catch (err) {
+      // Show error message using shared language utilities
+      const messages = getLocalizedMessages(currentLanguage);
+      alert(messages.pdfError);
+    }
+    
+    setExportLoading(false);
   };
 
   return (
@@ -211,8 +284,7 @@ export default function MovementForm() {
       <p className="form-description">{getFormDescription()}</p>
       
       <form className="medical-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label className="form-label">{getPatientNameLabel()}</label>
+        <div className="form-group">          <label className="form-label">{patientInfoLabels.patientName}</label>
           <input
             className="form-input"
             type="text"
@@ -223,7 +295,7 @@ export default function MovementForm() {
         </div>
         
         <div className="form-group">
-          <label className="form-label">{getPatientAgeLabel()}</label>
+          <label className="form-label">{patientInfoLabels.patientAge}</label>
           <input
             className="form-input"
             type="number"
@@ -236,7 +308,7 @@ export default function MovementForm() {
         </div>
         
         <div className="form-group">
-          <label className="form-label">{getRelationshipLabel()}</label>
+          <label className="form-label">{patientInfoLabels.relationship}</label>
           <input
             className="form-input"
             type="text"
@@ -337,20 +409,24 @@ export default function MovementForm() {
           type="submit" 
           className="submit-button" 
           disabled={loading}
-        >
-          {loading ? 
-            (currentLanguage === 'es' ? 'Procesando...' : 
-             currentLanguage === 'ru' ? 'Обработка...' : 
-             'Processing...') : 
-            getSubmitButtonText()}
+        >          {loading ? formActionText.processing : formActionText.submit}
         </button>
       </form>
-      
-      {result && (
-        <div 
-          className="result-container animate-fade-in"
-          dangerouslySetInnerHTML={{ __html: result }}
-        ></div>
+        {result && (
+        <div className="result-container animate-fade-in">
+          <div dangerouslySetInnerHTML={{ __html: result }}></div>
+          
+          {assessmentData && (
+            <div className="export-section">
+              <button 
+                className="export-button"
+                onClick={handleExportPDF}
+                disabled={exportLoading}
+              >                {exportLoading ? formActionText.exporting : formActionText.exportPDF}
+              </button>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

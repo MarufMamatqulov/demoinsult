@@ -69,14 +69,24 @@ const Dashboard = () => {
             </Link>
           </div>
         </div>
-        
-        <div className="dashboard-card">
+          <div className="dashboard-card">
           <h2>Patient Records</h2>
           <p>View patient history and reports</p>
           <div className="card-links">
             <Link to="/history" className="dashboard-link">
               <span className="card-icon">📋</span>
               {t('dashboard.history')}
+            </Link>
+          </div>
+        </div>
+        
+        <div className="dashboard-card special-highlight-card">
+          <h2>AI Assistant</h2>
+          <p>Chat with our AI assistant for personalized rehabilitation advice</p>
+          <div className="card-links">
+            <Link to="/patient-chat" className="dashboard-link">
+              <span className="card-icon">💬</span>
+              Rehabilitation AI Chat
             </Link>
           </div>
         </div>

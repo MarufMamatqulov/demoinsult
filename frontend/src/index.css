@@ -8,6 +8,15 @@ body {
 
 #root {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  margin-top: 80px; /* Space for the fixed navbar */
+  margin-bottom: 100px; /* Space for the fixed footer */
+  padding: 20px;
 }
 
 /* Prevent horizontal scrolling */

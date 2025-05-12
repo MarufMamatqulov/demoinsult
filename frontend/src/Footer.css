@@ -3,13 +3,14 @@
   background-color: #004d99;
   color: white;
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 1rem 0.5rem;
   font-family: 'Arial', sans-serif;
   font-size: 0.9rem;
-  position: relative;
+  position: fixed;
   bottom: 0;
   width: 100%;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 
 .footer-content {

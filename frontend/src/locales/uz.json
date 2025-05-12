@@ -66,7 +66,79 @@
   "video": {
     "title": "Video mashqlarni tahlil qilish",
     "description": "Mashqlarni bajarishni tahlil qilish uchun video faylni yuklang."
-  },  "footer": {
+  },  "speechHearing": {
+    "title": "Nutq va Eshitish Baholash",
+    "description": "Bemorning nutq va eshitish qobiliyatlarini baholash uchun ushbu shaklni to'ldiring. Ushbu baholash qarindosh yoki parvarishlovchi tomonidan to'ldirilishi kerak.",
+    "sectionTitles": {
+      "speech": "Nutqni baholash (1-5 savollar)",
+      "hearing": "Eshitishni baholash (6-10 savollar)"
+    },
+    "scoreDescriptions": [
+      "0 - Bajara olmaydi",
+      "1 - Jiddiy qiyinchilik",
+      "2 - O'rtacha qiyinchilik",
+      "3 - Qiyinchilik yo'q"
+    ],
+    "results": {
+      "title": "Natijalar:",
+      "speechScore": "Nutq bahosi:",
+      "hearingScore": "Eshitish bahosi:",
+      "totalScore": "Umumiy baho:",
+      "recommendations": "AI tavsiyalari:"
+    }
+  },
+  "movement": {
+    "title": "Harakat Baholash",
+    "description": "Bemorning harakat qobiliyatlarini baholash uchun ushbu shaklni to'ldiring. Ushbu baholash qarindosh yoki parvarishlovchi tomonidan to'ldirilishi kerak.",
+    "sectionTitles": {
+      "upperLimb": "Yuqori a'zo baholash (1-5 savollar)",
+      "lowerLimb": "Quyi a'zo baholash (6-9 savollar)",
+      "balance": "Muvozanat baholash (10-13 savollar)"
+    },
+    "scoreDescriptions": [
+      "0 - Bajara olmaydi",
+      "1 - Jiddiy qiyinchilik",
+      "2 - O'rtacha qiyinchilik",
+      "3 - Qiyinchilik yo'q"
+    ],
+    "results": {
+      "title": "Natijalar:",
+      "upperLimbScore": "Yuqori a'zo bahosi:",
+      "lowerLimbScore": "Quyi a'zo bahosi:",
+      "balanceScore": "Muvozanat bahosi:",
+      "totalScore": "Umumiy baho:",
+      "recommendations": "AI tavsiyalari:"
+    }
+  },
+  "chat": {
+    "title": "Insult Reabilitatsiyasi Yordamchisi",
+    "welcome": "Salom! Men sizning Insult Reabilitatsiyasi AI yordamchisiman. Bugun sizga qanday yordam bera olaman?",
+    "getAdvice": "Baholash bo'yicha maslahat olish",
+    "clearChat": "Chatni tozalash",
+    "placeholder": "Bu yerga savolingizni kiriting...",
+    "send": "Yuborish",
+    "typing": "AI yozmoqda...",
+    "error": "Kechirasiz, xatolik yuz berdi. Iltimos, keyinroq qayta urinib ko'ring.",
+    "adviceIntro": "Baholash natijalaringizga asoslangan batafsil maslahatlarim:",
+    "adviceError": "Kechirasiz, hozir maslahat bera olmayman. Iltimos, keyinroq qayta urinib ko'ring.",
+    "disclaimer": "Bu AI yordamchisi umumiy ma'lumotlarni taqdim etadi va professional tibbiy maslahat o'rnini bosmaydi."
+  },
+  "patientInfo": {
+    "patientName": "Bemor ismi",
+    "patientAge": "Bemor yoshi",
+    "relationship": "Munosabat (oila a'zosi, parvarishlovchi)"
+  },
+  "formActions": {
+    "submit": "Baholashni yuborish",
+    "processing": "Qayta ishlash...",
+    "exportPDF": "PDF sifatida eksport qilish",
+    "exporting": "Eksport qilish..."
+  },
+  "messages": {
+    "pdfSuccess": "PDF muvaffaqiyatli eksport qilindi",
+    "pdfError": "PDF eksportida xatolik yuz berdi"
+  },
+  "footer": {
     "copyright": "&copy; 2025 Insultdan keyingi reabilitatsiya AI platformasi. Barcha huquqlar himoyalangan.",
     "tagline": "AI vositalari bilan tiklanishni kuchaytirish.",
     "links": {

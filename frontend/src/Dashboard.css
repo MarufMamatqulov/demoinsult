@@ -99,6 +99,25 @@ body {
   position: relative;
 }
 
+.special-highlight-card {
+  background-color: #f7f0ff;
+  border: 2px solid #8338ec;
+  position: relative;
+}
+
+.special-highlight-card::before {
+  content: "AI";
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: #8338ec;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 15px;
+}
+
 .highlight-card::before {
   content: "New";
   position: absolute;

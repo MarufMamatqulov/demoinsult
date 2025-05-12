@@ -1,0 +1,266 @@
+.patient-chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 700px;
+  min-height: 500px;
+  background-color: #f5f7fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin: 20px auto;
+  width: 100%;
+  max-width: 900px;
+}
+
+.chat-header {
+  background-color: #3a86ff;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.chat-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.chat-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.clear-button {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.clear-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.advice-button {
+  background-color: #ff9f1c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.advice-button:hover {
+  background-color: #f08700;
+  transform: translateY(-1px);
+}
+
+.chat-messages {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 10px;
+  max-width: 80%;
+}
+
+.user-message {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.assistant-message {
+  align-self: flex-start;
+}
+
+.message-content {
+  padding: 12px 15px;
+  border-radius: 18px;
+  position: relative;
+  word-break: break-word;
+}
+
+.user-message .message-content {
+  background-color: #3a86ff;
+  color: white;
+  border-bottom-right-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.assistant-message .message-content {
+  background-color: white;
+  color: #333;
+  border-bottom-left-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.message-content p {
+  margin: 0 0 5px 0;
+  line-height: 1.4;
+}
+
+.timestamp {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.7);
+  display: block;
+  text-align: right;
+  margin-top: 2px;
+}
+
+.assistant-message .timestamp {
+  color: #aaa;
+}
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+  padding: 10px 15px;
+}
+
+.typing-indicator span {
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  background-color: #b6b6b6;
+  display: block;
+  opacity: 0.4;
+}
+
+.typing-indicator span:nth-child(1) {
+  animation: bouncing 1s infinite 0s;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation: bouncing 1s infinite 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation: bouncing 1s infinite 0.4s;
+}
+
+@keyframes bouncing {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.chat-input {
+  padding: 15px;
+  display: flex;
+  border-top: 1px solid #e0e0e0;
+  background-color: white;
+  column-gap: 10px;
+}
+
+.chat-input textarea {
+  flex-grow: 1;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px 15px;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.chat-input textarea:focus {
+  border-color: #3a86ff;
+  box-shadow: 0 0 0 2px rgba(58, 134, 255, 0.1);
+}
+
+.send-button {
+  background-color: #3a86ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  width: 75px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.send-button:hover:not([disabled]) {
+  background-color: #2a75e8;
+  transform: translateY(-2px);
+}
+
+.send-button:disabled {
+  background-color: #c0d6ff;
+  cursor: not-allowed;
+}
+
+.chat-footer {
+  padding: 10px 15px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+}
+
+.chat-footer p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #777;
+  text-align: center;
+}
+
+.advice-panel {
+  background-color: #fff3e0;
+  padding: 15px 20px;
+  border-top: 1px solid #ffe0b2;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.advice-panel h3 {
+  margin: 0 0 10px 0;
+  color: #e65100;
+  font-size: 1rem;
+}
+
+.advice-content {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .patient-chat-container {
+    height: 80vh;
+    margin: 10px;
+    border-radius: 8px;
+  }
+  
+  .message {
+    max-width: 90%;
+  }
+  
+  .chat-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .chat-controls button {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+}

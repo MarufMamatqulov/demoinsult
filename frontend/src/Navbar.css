@@ -35,6 +35,21 @@
   color: #ffcc00;
 }
 
+.navbar-links .highlight-link {
+  background-color: #4E30E3;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.navbar-links .highlight-link:hover {
+  background-color: #7659ff;
+  transform: translateY(-2px);
+  color: white;
+}
+
 /* Improved Navbar Language Selector Alignment */
 .navbar-language-selector {
   display: flex;

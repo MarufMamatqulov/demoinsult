@@ -1,5 +1,5 @@
 // Entry point for the React app
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Dashboard from './Dashboard';
@@ -17,32 +17,51 @@ import OurTeam from './OurTeam.tsx';
 import RehabilitationAnalysis from './RehabilitationAnalysis.tsx';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './i18n';
-import { useTranslation } from 'react-i18next';
 import Navbar from './Navbar.tsx';
 import Footer from './Footer.tsx';
+// Import the components that were only in App.js
+import MovementForm from './MovementForm.tsx';
+import SpeechHearingForm from './SpeechHearingForm.tsx';
+import PatientChat from './PatientChat.js';
+// Import Assessment Context Provider
+import { AssessmentProvider } from './AssessmentContext.js';
+// Import FloatingChat component
+import FloatingChat from './FloatingChat.js';
+// Import LanguageSelector component
+import LanguageSelector from './LanguageSelector.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-root.render(
-  <React.StrictMode>
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/nihss" element={<NihssForm />} />
-        <Route path="/phq9" element={<Phq9Form />} />
-        <Route path="/bp-trend" element={<BPTrendForm />} />
-        <Route path="/blood-pressure" element={<BloodPressureForm />} />
-        <Route path="/audio" element={<AudioUploadForm />} />
-        <Route path="/video" element={<VideoUploadForm />} />
-        <Route path="/history" element={<HistoryChart />} />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/faq" element={<FAQ />} />
-        <Route path="/contact" element={<ContactUs />} />
-        <Route path="/team" element={<OurTeam />} />
-        <Route path="/rehabilitation" element={<RehabilitationAnalysis />} />
-      </Routes>
+root.render(  <React.StrictMode>
+    <AssessmentProvider>
+      <Router>
+        <Navbar />
+        <div className="main-content">
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/nihss" element={<NihssForm />} />
+              <Route path="/phq9" element={<Phq9Form />} />
+              <Route path="/bp-trend" element={<BPTrendForm />} />
+              <Route path="/blood-pressure" element={<BloodPressureForm />} />
+              <Route path="/audio" element={<AudioUploadForm />} />
+              <Route path="/video" element={<VideoUploadForm />} />
+              <Route path="/history" element={<HistoryChart />} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/team" element={<OurTeam />} />
+              <Route path="/rehabilitation" element={<RehabilitationAnalysis />} />
+              <Route path="/speech-hearing-assessment" element={<SpeechHearingForm />} />              <Route path="/movement-assessment" element={<MovementForm />} />
+              <Route path="/patient-chat" element={<PatientChat patientContext={{}} />} />
+            </Routes>
+          </Suspense>
+      </div>
+      {/* Add floating chat component that appears on all pages */}
+      <FloatingChat />
+      {/* Add language selector */}
+      <LanguageSelector />
       <Footer />
-    </Router>
+      </Router>    </AssessmentProvider>
   </React.StrictMode>
 );

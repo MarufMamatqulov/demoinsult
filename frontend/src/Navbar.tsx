@@ -34,8 +34,8 @@ const Navbar = () => {
             <Link to="/phq9">PHQ-9</Link>
             <Link to="/nihss">NIHSS</Link>
           </div>
-        </li>
-        <li><Link to="/rehabilitation">Rehabilitation Analysis</Link></li>
+        </li>        <li><Link to="/rehabilitation">Rehabilitation Analysis</Link></li>
+        <li><Link to="/patient-chat" className="highlight-link">AI Assistant</Link></li>
         <li><Link to="/about">About Us</Link></li>
         <li><Link to="/faq">FAQ</Link></li>
         <li><Link to="/contact">Contact Us</Link></li>
