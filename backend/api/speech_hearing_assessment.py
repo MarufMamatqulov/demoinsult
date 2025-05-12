@@ -130,17 +130,18 @@ def generate_ai_recommendations(speech_score: int, hearing_score: int, total_sco
             Please provide detailed professional medical recommendations to improve this patient's 
             speech and hearing abilities based on the above scores. Include exercises, 
             therapies, and available resources.
-            """
-
-        # Call OpenAI API
-        openai_response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=prompt,
+            """        # Call OpenAI API
+        openai_response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a speech and hearing specialist providing professional medical recommendations."},
+                {"role": "user", "content": prompt}
+            ],
             max_tokens=300,
             temperature=0.7
         )
         
-        recommendations = openai_response.choices[0].text.strip()
+        recommendations = openai_response.choices[0].message['content'].strip()
         return recommendations
         
     except Exception as e:

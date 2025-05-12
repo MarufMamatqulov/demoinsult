@@ -25,8 +25,7 @@ class BloodPressureResponse(BaseModel):
 def analyze_bp(data: BloodPressureRequest):
     try:
         category = analyze_blood_pressure(data.systolic, data.diastolic, data.correct_position)
-        logging.info(f"Generated category: {category}")
-        message = ""
+        logging.info(f"Generated category: {category}")        message = ""
         if category == "Invalid reading: Position incorrect":
             message = "Please ensure correct position during measurement."
         elif category == "Hypertension Stage 2":
@@ -37,22 +36,31 @@ def analyze_bp(data: BloodPressureRequest):
             message = "Adopt a healthy lifestyle to prevent hypertension."
         else:
             message = "Your blood pressure is normal. Maintain a healthy lifestyle."
-
+            
         # Generate AI recommendations
-        prompt = f"Based on the blood pressure category '{category}', provide recommendations for the patient."
+        prompt = f"Based on the blood pressure category '{category}', provide detailed recommendations for the patient including lifestyle changes, diet, exercise and monitoring advice."
         try:
-            openai_response = openai.Completion.create(
-                engine="text-davinci-003",
-                prompt=prompt,
-                max_tokens=150
+            openai_response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a medical assistant providing concise, evidence-based recommendations for blood pressure management."},
+                    {"role": "user", "content": prompt}
+                ],
+                max_tokens=150,
+                temperature=0.7
             )
-            ai_recommendations = openai_response.choices[0].text.strip()
+            ai_recommendations = openai_response.choices[0].message['content'].strip()
         except Exception as e:
             logging.error(f"Error generating AI recommendations: {e}")
-            ai_recommendations = "Unable to generate AI recommendations at this time."
+            ai_recommendations = "Unable to generate AI recommendations at this time."        logging.info(f"Returning response: category={category}, message={message}, AI Recommendations={ai_recommendations}")
+        formatted_message = f"""
+Category: {category}
+Basic Advice: {message}
 
-        logging.info(f"Returning response: category={category}, message={message}, AI Recommendations={ai_recommendations}")
-        return BloodPressureResponse(category=category, message=f"{message}\nAI Recommendations: {ai_recommendations}")
+AI RECOMMENDATIONS:
+{ai_recommendations}
+"""
+        return BloodPressureResponse(category=category, message=formatted_message)
 
     except Exception as e:
         logging.error(f"Error in blood pressure analysis: {e}")

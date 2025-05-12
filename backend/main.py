@@ -17,6 +17,8 @@ from backend.api.report_api import router as report_router
 from backend.api.bp_trend import router as bp_trend_router
 from backend.api.speech_hearing_assessment import router as speech_hearing_router
 from backend.api.movement_assessment import router as movement_router
+from backend.api.export_assessment import router as export_router
+from backend.api.patient_chat import router as patient_chat_router
 
 app = FastAPI()
 
@@ -68,9 +70,11 @@ app.include_router(alerts_router, prefix="/alerts")
 # app.include_router(audio_router, prefix="/audio")
 # app.include_router(video_router, prefix="/video")
 app.include_router(report_router, prefix="/report")
-app.include_router(bp_trend_router)
-app.include_router(speech_hearing_router)
-app.include_router(movement_router)
+app.include_router(bp_trend_router, prefix="/bp-trend")
+app.include_router(speech_hearing_router, prefix="/assessment")
+app.include_router(movement_router, prefix="/assessment")
+app.include_router(export_router, prefix="/export")
+app.include_router(patient_chat_router, prefix="/chat")
 
 @app.middleware("http")
 async def add_recommendations(request: Request, call_next):
@@ -84,12 +88,16 @@ async def add_recommendations(request: Request, call_next):
         # Generate recommendations using OpenAI API
         try:
             prompt = f"Based on the following data, provide recommendations: {data}"
-            openai_response = openai.Completion.create(
-                engine="text-davinci-003",
-                prompt=prompt,
-                max_tokens=150
+            openai_response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a medical specialist providing professional recommendations."},
+                    {"role": "user", "content": prompt}
+                ],
+                max_tokens=150,
+                temperature=0.7
             )
-            recommendations = openai_response.choices[0].text.strip()
+            recommendations = openai_response.choices[0].message['content'].strip()
             data["recommendations"] = recommendations
         except Exception as e:
             data["recommendations"] = f"Error generating recommendations: {str(e)}"

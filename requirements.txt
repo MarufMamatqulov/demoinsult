@@ -5,3 +5,6 @@ pandas
 numpy
 xgboost
 sqlalchemy
+reportlab
+openai
+pydantic

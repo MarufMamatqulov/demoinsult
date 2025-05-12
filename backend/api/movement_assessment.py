@@ -147,17 +147,18 @@ def generate_ai_recommendations(upper_limb_score: int, lower_limb_score: int,
             Please provide detailed professional medical recommendations to improve this patient's 
             movement abilities based on the above scores. Include specific exercises, 
             physical therapies, and available resources. Be specific for each area (upper limbs, lower limbs, and balance).
-            """
-
-        # Call OpenAI API
-        openai_response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=prompt,
+            """        # Call OpenAI API
+        openai_response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a physical therapy and rehabilitation specialist providing professional medical recommendations."},
+                {"role": "user", "content": prompt}
+            ],
             max_tokens=400,
             temperature=0.7
         )
         
-        recommendations = openai_response.choices[0].text.strip()
+        recommendations = openai_response.choices[0].message['content'].strip()
         return recommendations
         
     except Exception as e:
