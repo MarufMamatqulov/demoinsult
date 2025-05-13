@@ -2,12 +2,12 @@
   "dashboard": {
     "title": "Stroke Rehabilitation AI Platform",
     "phq9": "PHQ-9 Depression Assessment",
-    "nihss": "NIHSS Stroke Scale",
-    "bloodPressure": "Blood Pressure Analysis",
+    "nihss": "NIHSS Stroke Scale",    "bloodPressure": "Blood Pressure Analysis",
     "bpTrend": "BP Trend Analysis",
     "speechHearing": "Speech & Hearing Assessment",
     "movement": "Movement Assessment",
-    "history": "History & Reports"
+    "history": "History & Reports",
+    "rehabilitation": "Rehabilitation Analysis & Exercises"
   },
   "assessments": {
     "speech_hearing": "Speech & Hearing Assessment",

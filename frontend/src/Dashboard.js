@@ -9,8 +9,18 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <h1 className="dashboard-title">{t('dashboard.title')}</h1>
-      
-      <div className="dashboard-grid">
+        <div className="dashboard-grid">
+        <div className="dashboard-card special-highlight-card">
+          <h2>Stroke Rehabilitation</h2>
+          <p>Access rehabilitation tools, exercises, and resources</p>
+          <div className="card-links">
+            <Link to="/rehabilitation" className="dashboard-link">
+              <span className="card-icon">🔄</span>
+              {t('dashboard.rehabilitation', 'Rehabilitation Analysis & Exercises')}
+            </Link>
+          </div>
+        </div>
+        
         <div className="dashboard-card">
           <h2>Stroke Assessment</h2>
           <p>Evaluate stroke symptoms and severity</p>

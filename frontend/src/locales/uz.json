@@ -1,12 +1,12 @@
 {  "dashboard": {
     "title": "Insultdan keyingi reabilitatsiya AI platformasi",
     "phq9": "PHQ-9 depressiyani baholash",
-    "nihss": "NIHSS insult shkalasi",
-    "bloodPressure": "Qon bosimini tahlil qilish",
+    "nihss": "NIHSS insult shkalasi",    "bloodPressure": "Qon bosimini tahlil qilish",
     "bpTrend": "Qon bosimi tendensiyasi tahlili",
     "speechHearing": "Nutq va Eshitish Baholash",
     "movement": "Harakat Baholash",
-    "history": "Tarix va hisobotlar"
+    "history": "Tarix va hisobotlar",
+    "rehabilitation": "Reabilitatsiya tahlili va mashqlari"
   },
   "nihss": {
     "title": "NIHSS insult shkalasi",
