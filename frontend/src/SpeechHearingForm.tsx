@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import './FormMedical.css';
 import { getPatientInfoLabels, getFormActionText, getLocalizedMessages } from './utils/languageUtils';
 import { useAssessment } from './AssessmentContext.js';
+import AIRecommendations from './AIRecommendations.tsx';
 
 const questions = {
   en: [
@@ -369,8 +370,7 @@ export default function SpeechHearingForm() {
         >          {loading ? formActionText.processing : formActionText.submit}
         </button>
       </form>
-        {result && (
-        <div className="result-container animate-fade-in">
+        {result && (        <div className="result-container animate-fade-in">
           <div dangerouslySetInnerHTML={{ __html: result }}></div>
           
           {assessmentData && (
@@ -381,6 +381,13 @@ export default function SpeechHearingForm() {
                 disabled={exportLoading}
               >                {exportLoading ? formActionText.exporting : formActionText.exportPDF}
               </button>
+              
+              {/* Add AI Recommendations component */}
+              <AIRecommendations 
+                assessmentType="speech" 
+                assessmentData={formData} 
+                language={localStorage.getItem('i18nextLng')?.split('-')[0] || 'en'}
+              />
             </div>
           )}
         </div>

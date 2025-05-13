@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './FormMedical.css';
+import AIRecommendations from './AIRecommendations.tsx';
 
 export default function BloodPressureForm() {
   const { t } = useTranslation();
@@ -59,11 +60,17 @@ export default function BloodPressureForm() {
         <button className="form-submit-btn" type="submit" disabled={loading}>
           {loading ? 'Analyzing...' : 'Submit'}
         </button>
-      </form>
-      {result && (
+      </form>      {result && (
         <div className="result-container">
           <h3>Result</h3>
           <p>{result}</p>
+          
+          {/* Add AI Recommendations component */}
+          <AIRecommendations 
+            assessmentType="blood_pressure" 
+            assessmentData={{ systolic, diastolic }} 
+            language={localStorage.getItem('i18nextLng')?.split('-')[0] || 'en'}
+          />
         </div>
       )}
     </div>

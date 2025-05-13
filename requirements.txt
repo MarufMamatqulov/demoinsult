@@ -6,5 +6,6 @@ numpy
 xgboost
 sqlalchemy
 reportlab
-openai
+openai>=1.0.0  # Using OpenAI's latest API version
 pydantic
+python-dotenv  # For environment variables

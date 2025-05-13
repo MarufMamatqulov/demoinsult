@@ -1,6 +1,10 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
-from ml_models.exercise_analysis import analyze_exercise_video
 import os
+import sys
+
+# Add project root to Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+from ml_models.exercise_analysis import analyze_exercise_video
 
 router = APIRouter()
 

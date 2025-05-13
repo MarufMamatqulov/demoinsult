@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import './FormMedical.css';
 import { getPatientInfoLabels, getFormActionText, getLocalizedMessages } from './utils/languageUtils';
 import { useAssessment } from './AssessmentContext.js';
+import AIRecommendations from './AIRecommendations.tsx';
 
 const questions = {
   en: [
@@ -415,8 +416,7 @@ export default function MovementForm() {
         {result && (
         <div className="result-container animate-fade-in">
           <div dangerouslySetInnerHTML={{ __html: result }}></div>
-          
-          {assessmentData && (
+            {assessmentData && (
             <div className="export-section">
               <button 
                 className="export-button"
@@ -424,6 +424,13 @@ export default function MovementForm() {
                 disabled={exportLoading}
               >                {exportLoading ? formActionText.exporting : formActionText.exportPDF}
               </button>
+              
+              {/* Add AI Recommendations component */}
+              <AIRecommendations 
+                assessmentType="movement" 
+                assessmentData={formData} 
+                language={localStorage.getItem('i18nextLng')?.split('-')[0] || 'en'}
+              />
             </div>
           )}
         </div>

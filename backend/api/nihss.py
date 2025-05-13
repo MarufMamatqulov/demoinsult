@@ -1,5 +1,10 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+import sys
+import os
+
+# Add project root to Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from ml_models.nihss_model import predict_nihss_severity
 
 router = APIRouter()

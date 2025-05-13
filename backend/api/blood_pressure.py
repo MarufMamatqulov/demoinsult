@@ -1,13 +1,23 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from ml_models.blood_pressure_analysis import analyze_blood_pressure
 import openai
 import logging
+import sys
+import os
+
+# Add project root to Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+from ml_models.blood_pressure_analysis import analyze_blood_pressure
 
 router = APIRouter()
 
-# Set OpenAI API key
-openai.api_key = "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"
+# Set OpenAI API key from environment variable
+from dotenv import load_dotenv
+load_dotenv()
+openai_api_key = os.getenv("OPENAI_API_KEY")
+if not openai_api_key:
+    logging.warning("OPENAI_API_KEY is not set in environment variables. API calls may fail.")
+openai.api_key = openai_api_key
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

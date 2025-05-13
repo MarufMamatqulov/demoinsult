@@ -1,6 +1,11 @@
 from fastapi import APIRouter, UploadFile, HTTPException
-from ml_models.audio_cognition import analyze_audio
 import shutil
+import sys
+import os
+
+# Add project root to Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+from ml_models.audio_cognition import analyze_audio
 
 router = APIRouter()
 

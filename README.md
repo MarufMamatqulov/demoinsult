@@ -6,7 +6,7 @@ The Stroke Rehabilitation AI Platform is designed to assist healthcare professio
 ## Technologies Used
 - **Backend**: Python, FastAPI, SQLAlchemy
 - **Frontend**: React, Tailwind CSS
-- **Machine Learning**: OpenAI Whisper, MediaPipe, Scikit-learn
+- **Machine Learning**: OpenAI (GPT-4o, Whisper), MediaPipe, Scikit-learn
 - **Database**: PostgreSQL (optional)
 - **Containerization**: Docker, Docker Compose
 
@@ -49,6 +49,8 @@ The Stroke Rehabilitation AI Platform is designed to assist healthcare professio
 - **Audio Analysis**: `/audio/analyze`
 - **PDF Report Generation**: `/report/pdf/{patient_id}`
 - **Recommendations**: `/recommendations/generate`
+- **AI Rehabilitation Analysis**: `/ai/rehabilitation/analysis`
+- **AI Chat Completion**: `/ai/chat/completion`
 
 ## How to Run with Docker
 1. Build and start the containers:
@@ -56,6 +58,28 @@ The Stroke Rehabilitation AI Platform is designed to assist healthcare professio
    docker-compose up --build
    ```
 2. Access the frontend at `http://localhost:3000` and the backend at `http://localhost:8000`.
+
+## Features
+
+### AI-Powered Rehabilitation Analysis
+- **Assessment Analysis**: Get AI-driven insights from assessment forms
+- **Multilingual Support**: Available in English, Russian, and Uzbek
+- **Smart Recommendations**: Personalized rehabilitation advice based on assessment results
+
+### Rehabilitation Exercises
+- **Video Exercises**: Curated collection of stroke rehabilitation exercise videos
+- **Articles**: Informative articles about stroke recovery in multiple languages
+- **Cognitive Exercises**: Memory and speech improvement resources
+
+### Quick Start
+For an easier start, use our startup scripts:
+- Windows: `.\start.ps1`
+- Linux/macOS: `./start.sh`
+
+## Documentation
+Additional documentation can be found in the `docs` directory:
+- [Architecture Overview](docs/architecture.md)
+- [OpenAI Integration](docs/openai_integration.md)
 
 ## Contribution
 Feel free to contribute by submitting issues or pull requests. For major changes, please open an issue first to discuss what you would like to change.

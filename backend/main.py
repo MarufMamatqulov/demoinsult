@@ -5,25 +5,35 @@ import numpy as np
 from fastapi.middleware.cors import CORSMiddleware
 import openai
 import json
+import os
 from starlette.responses import JSONResponse, StreamingResponse
+from dotenv import load_dotenv
 
-from backend.api.phq9 import router as phq9_router
-from backend.api.alert_test_api import router as alert_test_router
-from backend.api.alerts_api import router as alerts_router
+# Load environment variables
+load_dotenv()
+
+from api.phq9 import router as phq9_router
+from api.alert_test_api import router as alert_test_router
+from api.alerts_api import router as alerts_router
 # Removing audio and video test routers as requested
-# from backend.api.audio_test_api import router as audio_router
-# from backend.api.video_test_api import router as video_router
-from backend.api.report_api import router as report_router
-from backend.api.bp_trend import router as bp_trend_router
-from backend.api.speech_hearing_assessment import router as speech_hearing_router
-from backend.api.movement_assessment import router as movement_router
-from backend.api.export_assessment import router as export_router
-from backend.api.patient_chat import router as patient_chat_router
+# from api.audio_test_api import router as audio_router
+# from api.video_test_api import router as video_router
+from api.report_api import router as report_router
+from api.bp_trend import router as bp_trend_router
+from api.speech_hearing_assessment import router as speech_hearing_router
+from api.movement_assessment import router as movement_router
+from api.export_assessment import router as export_router
+from api.patient_chat import router as patient_chat_router
+from api.openai_integration import router as openai_router
 
 app = FastAPI()
 
+# Add project root to Python path
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 # Load the trained model
-model = joblib.load("ml_models/phq_model.pkl")
+model = joblib.load(os.path.abspath(os.path.join(os.path.dirname(__file__), "../ml_models/phq_model.pkl")))
 
 # Middleware setup
 app.add_middleware(
@@ -34,8 +44,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Set OpenAI API key
-openai.api_key = "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"
+# Set OpenAI API key from environment variable
+openai_api_key = os.getenv("OPENAI_API_KEY")
+if not openai_api_key:
+    raise ValueError("OPENAI_API_KEY is not set in environment variables. Please check your .env file.")
+openai.api_key = openai_api_key
 
 class PHQData(BaseModel):
     phq1: int
@@ -75,6 +88,7 @@ app.include_router(speech_hearing_router, prefix="/assessment")
 app.include_router(movement_router, prefix="/assessment")
 app.include_router(export_router, prefix="/export")
 app.include_router(patient_chat_router, prefix="/chat")
+app.include_router(openai_router, prefix="/ai")
 
 @app.middleware("http")
 async def add_recommendations(request: Request, call_next):

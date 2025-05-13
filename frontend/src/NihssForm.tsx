@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './FormMedical.css';
+import AIRecommendations from './AIRecommendations.tsx';
 
 export default function NihssForm() {
   const { t } = useTranslation();
@@ -74,11 +75,17 @@ export default function NihssForm() {
         <button className="form-submit-btn" type="submit" disabled={loading}>
           {loading ? 'Tahlil qilinmoqda...' : 'Yuborish'}
         </button>
-      </form>
-      {result && (
+      </form>      {result && (
         <div className="result-container">
           <h3>Natija</h3>
           <p>{result}</p>
+          
+          {/* Add AI Recommendations component */}
+          <AIRecommendations 
+            assessmentType="nihss" 
+            assessmentData={formData} 
+            language={localStorage.getItem('i18nextLng')?.split('-')[0] || 'en'}
+          />
         </div>
       )}
     </div>
