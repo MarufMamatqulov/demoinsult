@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AIRecommendations.css';
 
@@ -9,28 +9,91 @@ interface AIRecommendationsProps {
   language: string;
 }
 
-const AIRecommendations: React.FC<AIRecommendationsProps> = ({ assessmentType, assessmentData, language }) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [aiResponse, setAiResponse] = useState<string | null>(null);
-  const [recommendations, setRecommendations] = useState<string[] | null>(null);
+const AIRecommendations = ({ assessmentType, assessmentData, language }: AIRecommendationsProps) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null as string | null);
+  const [aiResponse, setAiResponse] = useState(null as string | null);
+  const [recommendations, setRecommendations] = useState(null as string[] | null);
+  
+  // Auto-analyze on component mount if assessment data is available
+  useEffect(() => {
+    if (assessmentType && assessmentData && Object.keys(assessmentData).length > 0) {
+      // Add a small delay to make sure other components are mounted
+      const timer = setTimeout(() => {
+        getAnalysis();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [assessmentType, assessmentData, language]);
 
-  // Function to get analysis from OpenAI
+  // Function to get analysis from OpenAI  // Define fallbackAnalysis at component level so it's available everywhere
+  const [fallbackAnalysis, setFallbackAnalysis] = useState('');
+
   const getAnalysis = async () => {
     setLoading(true);
     setError(null);
     try {
+      // Reset fallback analysis for new analysis
+      setFallbackAnalysis("");if (assessmentType === "blood_pressure") {
+        const systolic = assessmentData?.systolic || 0;
+        const diastolic = assessmentData?.diastolic || 0;
+          if (systolic > 0 && diastolic > 0) {
+          if (systolic >= 140 || diastolic >= 90) {
+            setFallbackAnalysis("Your blood pressure readings suggest hypertension. Consider lifestyle changes and consulting with a healthcare provider.");
+          } else if (systolic >= 130 || diastolic >= 80) {
+            setFallbackAnalysis("Your blood pressure is slightly elevated. Regular monitoring and healthy habits are recommended.");          } else {
+            setFallbackAnalysis("Your blood pressure appears to be in the normal range. Continue maintaining a healthy lifestyle.");
+          }
+        }
+      } else if (assessmentType === "phq9") {
+        // Calculate total score for PHQ-9
+        const total = Object.values(assessmentData).reduce((sum: number, val: any) => sum + (Number(val) || 0), 0);
+        if (total >= 15) {
+          setFallbackAnalysis("Your responses indicate moderately severe to severe depression symptoms. Please consider seeking professional help.");
+        } else if (total >= 10) {
+          setFallbackAnalysis("Your responses indicate moderate depression symptoms. Consulting with a healthcare provider is recommended.");
+        } else if (total >= 5) {
+          setFallbackAnalysis("Your responses indicate mild depression symptoms. Monitoring your symptoms and discussing with a healthcare provider may be beneficial.");
+        } else {
+          setFallbackAnalysis("Your responses indicate minimal or no depression symptoms. Maintaining mental wellness activities is recommended.");
+        }
+      } else if (assessmentType === "nihss") {
+        const total = Object.values(assessmentData).reduce((sum: number, val: any) => sum + (Number(val) || 0), 0);
+        if (total >= 16) {
+          setFallbackAnalysis("Your NIHSS score suggests a severe stroke. Immediate medical attention and intensive rehabilitation may be required.");
+        } else if (total >= 5) {
+          setFallbackAnalysis("Your NIHSS score suggests a moderate stroke. A comprehensive rehabilitation program is recommended.");
+        } else {
+          setFallbackAnalysis("Your NIHSS score suggests a mild stroke. Early rehabilitation intervention can improve recovery outcomes.");
+        }
+      }
+      
       const response = await axios.post('http://localhost:8000/ai/rehabilitation/analysis', {
         assessment_data: assessmentData,
         assessment_type: assessmentType,
         language: language
+      }, {
+        timeout: 30000 // 30 seconds timeout
       });
       
-      setAiResponse(response.data.response);
-      setRecommendations(response.data.recommendations);
-    } catch (err) {
+      if (response.data && response.data.response) {
+        setAiResponse(response.data.response);
+        setRecommendations(response.data.recommendations || null);
+      } else {
+        // Use fallback if response doesn't contain expected data
+        throw new Error("Invalid response format from AI service");
+      }    } catch (err) {
       console.error('Error getting AI recommendations:', err);
-      setError('Failed to get AI analysis. Please try again later.');
+      
+      // Use fallback analysis if available
+      if (fallbackAnalysis !== '') {
+        setAiResponse(fallbackAnalysis);
+        setError("AI service unavailable. Showing basic analysis instead.");
+      } else {
+        setError('Failed to get AI analysis. Please try again later.');
+        // Provide a generic fallback when specific analysis isn't available
+        setAiResponse("Unable to provide detailed analysis. Please consult with your healthcare provider for a proper assessment of your condition.");
+      }
     } finally {
       setLoading(false);
     }
@@ -79,6 +142,11 @@ const AIRecommendations: React.FC<AIRecommendationsProps> = ({ assessmentType, a
         ru: 'Рекомендации ИИ',
         uz: 'AI tavsiyalari'
       },
+      errorRetry: {
+        en: 'Error connecting to AI service. Click to retry.',
+        ru: 'Ошибка подключения к сервису ИИ. Нажмите, чтобы повторить попытку.',
+        uz: 'AI xizmatiga ulanishda xatolik. Qayta urinish uchun bosing.'
+      },
       analysisTitle: {
         en: 'Analysis',
         ru: 'Анализ',
@@ -120,10 +188,10 @@ const AIRecommendations: React.FC<AIRecommendationsProps> = ({ assessmentType, a
           <p>{getTranslation('loadingText')}</p>
         </div>
       )}
-
+      
       {error && (
-        <div className="error-message">
-          {error}
+        <div className="error-message" onClick={getAnalysis}>
+          {getTranslation('errorRetry')}
         </div>
       )}
 

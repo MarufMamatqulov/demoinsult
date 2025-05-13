@@ -31,23 +31,34 @@ export default function Phq9Form() {
   const handleChange = (q, value) => {
     setAnswers({ ...answers, [q]: value });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setResult(null);
     try {
-      const response = await fetch('/api/phq9/analyze', {
+      const response = await fetch('http://localhost:8000/phq/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(answers)
       });
+      
+      if (!response.ok) {
+        throw new Error(`Server responded with status: ${response.status}`);
+      }
+      
       const data = await response.json();
-      setResult(data.result);
+      
+      if (data.status === "error") {
+        throw new Error(data.message || "Unknown error occurred");
+      }
+      
+      setResult(`Depression level: ${data.depression_level}, Total score: ${data.total_score}`);
     } catch (err) {
-      setResult('Error analyzing PHQ-9.');
+      console.error("PHQ-9 analysis error:", err);
+      setResult(`Error analyzing PHQ-9: ${err.message || "Unknown error"}`);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (

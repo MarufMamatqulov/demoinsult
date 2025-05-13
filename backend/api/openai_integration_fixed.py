@@ -76,7 +76,7 @@ def get_system_prompt(assessment_type: str, language: str) -> str:
     # Add assessment-specific prompt if available
     if assessment_type in assessment_additions:
         lang_specific_addition = assessment_additions[assessment_type].get(language, 
-                                                                        assessment_additions[assessment_type]["en"])
+                                                                      assessment_additions[assessment_type]["en"])
         prompt += lang_specific_addition
     
     return prompt
@@ -100,6 +100,7 @@ async def analyze_rehabilitation_data(request: RehabilitationAnalysisRequest):
             try:
                 from openai import OpenAI
                 client = OpenAI(api_key=OPENAI_API_KEY)
+                
                 response = client.chat.completions.create(
                     model="gpt-4o",  # Using the model expected by tests
                     messages=messages,
@@ -118,7 +119,8 @@ async def analyze_rehabilitation_data(request: RehabilitationAnalysisRequest):
                     max_tokens=1000
                 )
                 
-                # Process response                ai_text = response.choices[0].message.content
+                # Process response
+                ai_text = response.choices[0].message.content
         except Exception as api_error:
             print(f"OpenAI API error: {str(api_error)}")
             ai_text = "Sorry, I couldn't process your request. Please try again later."
@@ -153,7 +155,9 @@ async def chat_completion(request: ChatCompletionRequest):
             messages.insert(0, {
                 "role": "system", 
                 "content": system_content.get(request.language, system_content["en"])
-            })        # Add context if provided
+            })
+            
+        # Add context if provided
         if request.context:
             context_msg = f"Context information: {json.dumps(request.context)}"
             messages.insert(1, {"role": "system", "content": context_msg})
@@ -163,6 +167,7 @@ async def chat_completion(request: ChatCompletionRequest):
             try:
                 from openai import OpenAI
                 client = OpenAI(api_key=OPENAI_API_KEY)
+                
                 response = client.chat.completions.create(
                     model="gpt-4o",  # Using the model expected by tests
                     messages=messages,

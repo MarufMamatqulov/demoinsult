@@ -48,11 +48,6 @@ def predict_phq9(data: PHQ9Request):
     prediction = phq9_model.predict(features)
     return {"prediction": prediction[0]}
 
-@router.post("/phq/analyze", response_model=PHQ9Response)
-def analyze_phq(data: PHQ9Request):
-    prediction = predict_phq_level(data.dict())
-    return PHQ9Response(prediction=prediction)
-
 @router.post("/phq/analyze")
 async def analyze_phq(input_data: PHQInput):
     try:
@@ -63,6 +58,16 @@ async def analyze_phq(input_data: PHQInput):
         depression_level = analyze_phq9(answers)
         total_score = sum(answers.values())
 
-        return {"depression_level": depression_level, "total_score": total_score}
+        # Return result with AI recommendations
+        return {
+            "depression_level": depression_level, 
+            "total_score": total_score,
+            "status": "success"
+        }
+    except Exception as e:
+        # Log the error
+        print(f"Error analyzing PHQ-9: {str(e)}")
+        # Return error response
+        return {"status": "error", "message": f"Error analyzing PHQ-9: {str(e)}"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
