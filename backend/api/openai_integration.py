@@ -4,6 +4,7 @@ import os
 import openai
 from typing import Dict, Any, List, Optional
 import json
+import logging
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -94,8 +95,8 @@ async def analyze_rehabilitation_data(request: RehabilitationAnalysisRequest):
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": f"Please analyze this {request.assessment_type} assessment data and provide recommendations: {json.dumps(request.assessment_data)}"}
         ]
-        
-        # Call OpenAI API
+          # Call OpenAI API
+        ai_text = ""  # Initialize ai_text to avoid UnboundLocalError
         try:
             try:
                 from openai import OpenAI
@@ -117,10 +118,10 @@ async def analyze_rehabilitation_data(request: RehabilitationAnalysisRequest):
                     temperature=0.7,
                     max_tokens=1000
                 )
-                
-                # Process response                ai_text = response.choices[0].message.content
+                  # Process response
+                ai_text = response.choices[0].message.content
         except Exception as api_error:
-            print(f"OpenAI API error: {str(api_error)}")
+            logging.error(f"OpenAI API error: {str(api_error)}")
             ai_text = "Sorry, I couldn't process your request. Please try again later."
         
         # Extract recommendations (assuming the AI formats recommendations with bullet points)
@@ -183,14 +184,13 @@ async def chat_completion(request: ChatCompletionRequest):
                     temperature=0.7,
                     max_tokens=1000
                 )
-                
-                # Return the response
+                  # Return the response
                 return AIResponse(
                     response=response.choices[0].message.content,
                     recommendations=None
                 )
         except Exception as api_error:
-            print(f"OpenAI API error in chat completion: {str(api_error)}")
+            logging.error(f"OpenAI API error in chat completion: {str(api_error)}")
             # Return a friendly error message instead of raising an exception
             return AIResponse(
                 response="Sorry, I encountered an issue processing your request. Please try again later.",

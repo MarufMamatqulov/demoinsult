@@ -29,6 +29,11 @@ class SpeechHearingResponse(BaseModel):
     overall_level: str
     recommendations: str
     
+@router.post("/speech-hearing", response_model=SpeechHearingResponse)
+def analyze_speech_hearing_alt(data: SpeechHearingRequest):
+    """Alternative endpoint for speech hearing assessment that matches frontend path"""
+    return analyze_speech_hearing(data)
+
 @router.post("/assessment/speech-hearing", response_model=SpeechHearingResponse)
 def analyze_speech_hearing(data: SpeechHearingRequest):
     try:

@@ -31,6 +31,11 @@ class MovementResponse(BaseModel):
     overall_level: str
     recommendations: str
     
+@router.post("/movement", response_model=MovementResponse)
+def analyze_movement_alt(data: MovementRequest):
+    """Alternative endpoint for movement assessment that matches frontend path"""
+    return analyze_movement(data)
+
 @router.post("/assessment/movement", response_model=MovementResponse)
 def analyze_movement(data: MovementRequest):
     try:

@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
+import './src/AssessmentForms.css';
+import { useTranslation } from 'react-i18next';
+import AIRecommendations from './src/AIRecommendations';
 
-const NihssForm: React.FC = () => {
-    const [formData, setFormData] = useState({
-        nihs_1: '', nihs_2: '', nihs_3: '', nihs_4: '', nihs_5: '',
-        nihs_6: '', nihs_7: '', nihs_8: '', nihs_9: '', nihs_10: '', nihs_11: ''
+interface FormData {
+    [key: string]: string;
+}
+
+const NihssForm = () => {
+    const { t } = useTranslation();
+    const [formData, setFormData] = useState<FormData>({
+        nihs_1: '0', nihs_2: '0', nihs_3: '0', nihs_4: '0', nihs_5: '0',
+        nihs_6: '0', nihs_7: '0', nihs_8: '0', nihs_9: '0', nihs_10: '0', nihs_11: '0'
     });
-    const [result, setResult] = useState<string | null>(null);
+    const [result, setResult] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
@@ -15,15 +25,25 @@ const NihssForm: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch('/nihss/analyze', {
+            const response = await fetch('http://localhost:8000/nihss/analyze', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
             const data = await response.json();
-            setResult(data.severity);
+            if (data && data.severity) {
+                setResult(data.severity);
+            } else {
+                setResult("Unable to determine severity from the response");
+            }
         } catch (error) {
             console.error('Error:', error);
+            setResult("An error occurred while analyzing the data. Please try again.");
         }
     };
 
