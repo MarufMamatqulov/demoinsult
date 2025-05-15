@@ -33,23 +33,26 @@ def train_nihss_model(csv_path):
 
 # Define the function to predict stroke severity
 def predict_nihss_severity(input_dict):
-    # Load the trained model - use the phq_model.pkl which should exist
+    """
+    Predict stroke severity based on NIHSS scores.
+    
+    This function uses a direct calculation approach rather than loading a model,
+    as NIHSS severity interpretation is standardized based on total score.
+    
+    Args:
+        input_dict: Dictionary with NIHSS item scores (nihs_1 through nihs_11)
+        
+    Returns:
+        string: Severity classification
+    """
     try:
-        model_path = os.path.join(os.path.dirname(__file__), 'nihss_model.joblib')
-        if not os.path.exists(model_path):
-            model_path = os.path.join(os.path.dirname(__file__), 'phq_model.pkl')
-            print(f"NIHSS model not found, using PHQ model as fallback: {model_path}")
-        
-        model = joblib.load(model_path)
-        
-        # Convert input_dict to DataFrame
-        input_df = pd.DataFrame([input_dict])
-        
         # Calculate total NIHSS score
         total_score = sum(input_dict.values())
         
         # Determine severity based on total score
-        if total_score <= 4:
+        if total_score == 0:
+            return "No Stroke Symptoms"
+        elif 1 <= total_score <= 4:
             return "Minor Stroke"
         elif 5 <= total_score <= 15:
             return "Moderate Stroke"
@@ -60,7 +63,8 @@ def predict_nihss_severity(input_dict):
         else:
             return "Invalid Score"
     except Exception as e:
-        print(f"Error predicting NIHSS severity: {str(e)}")
+        import logging
+        logging.error(f"Error predicting NIHSS severity: {str(e)}")
         return "Unable to determine severity"
 
 if __name__ == "__main__":

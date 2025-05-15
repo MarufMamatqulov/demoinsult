@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import './AssessmentForms.css';
 import { useTranslation } from 'react-i18next';
 // Import AIRecommendations component with correct path
-import AIRecommendations from './src/AIRecommendations.tsx';
+import AIRecommendations from './src/AIRecommendations';
 
 const NihssForm = () => {
     const { t } = useTranslation();

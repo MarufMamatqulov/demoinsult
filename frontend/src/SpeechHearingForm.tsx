@@ -381,11 +381,10 @@ export default function SpeechHearingForm() {
                 disabled={exportLoading}
               >                {exportLoading ? formActionText.exporting : formActionText.exportPDF}
               </button>
-              
-              {/* Add AI Recommendations component */}
+                {/* Add AI Recommendations component */}
               <AIRecommendations 
                 assessmentType="speech" 
-                assessmentData={formData} 
+                assessmentData={assessmentData} 
                 language={localStorage.getItem('i18nextLng')?.split('-')[0] || 'en'}
               />
             </div>
