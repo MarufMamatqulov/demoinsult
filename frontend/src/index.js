@@ -2,6 +2,8 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import './MobileStyles.css'; // Add mobile-specific styles
+import { initMobileOptimizations } from './utils/mobileUtils';
 import Dashboard from './Dashboard';
 import NihssForm from './NihssForm.tsx';
 import Phq9Form from './Phq9Form.tsx';
@@ -30,6 +32,11 @@ import FloatingChat from './FloatingChat.js';
 // Import LanguageSelector component
 import LanguageSelector from './LanguageSelector.js';
 
+// Initialize mobile optimizations
+document.addEventListener('DOMContentLoaded', () => {
+  initMobileOptimizations();
+});
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(  <React.StrictMode>
@@ -55,13 +62,10 @@ root.render(  <React.StrictMode>
               <Route path="/speech-hearing-assessment" element={<SpeechHearingForm />} />              <Route path="/movement-assessment" element={<MovementForm />} />
               <Route path="/patient-chat" element={<PatientChat patientContext={{}} />} />
             </Routes>
-          </Suspense>
-      </div>
+          </Suspense>      </div>
       {/* Add floating chat component that appears on all pages */}
       <FloatingChat />
-      {/* Add language selector */}
-      <LanguageSelector />
       <Footer />
-      </Router>    </AssessmentProvider>
+      </Router></AssessmentProvider>
   </React.StrictMode>
 );

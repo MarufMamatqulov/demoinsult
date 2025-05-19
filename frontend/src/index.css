@@ -19,6 +19,14 @@ body {
   padding: 20px;
 }
 
+@media (max-width: 768px) {
+  .main-content {
+    margin-top: 50px; /* Reduced space for navbar on mobile */
+    margin-bottom: 50px; /* Reduced space for footer on mobile */
+    padding: 12px 10px;
+  }
+}
+
 /* Prevent horizontal scrolling */
 html, body {
   margin: 0;
@@ -29,6 +37,7 @@ html, body {
 /* Ensure all elements fit within the viewport */
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
 }
 
 /* General Responsive Styles */
@@ -36,6 +45,31 @@ body {
   margin: 0;
   font-family: 'Arial', sans-serif;
   line-height: 1.6;
+  /* Better scroll experience on iOS */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* For iOS Safari overscroll behavior */
+html {
+  overscroll-behavior-y: none;
+  height: 100%;
+}
+
+/* Styles for devices with notches */
+body.has-notch .navbar {
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+body.has-notch .footer {
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+body.ios-device * {
+  cursor: pointer;
 }
 
 .page-container {

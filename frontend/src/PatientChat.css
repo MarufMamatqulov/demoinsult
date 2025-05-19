@@ -11,6 +11,8 @@
   margin: 20px auto;
   width: 100%;
   max-width: 900px;
+  /* Mobile friendly adjustments */
+  position: relative;
 }
 
 .chat-header {
@@ -177,6 +179,8 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 12px 15px;
+  font-size: 16px; /* Prevents iOS zoom on focus */
+  min-height: 44px; /* Minimum touch target size */
   font-family: inherit;
   font-size: 1rem;
   resize: none;

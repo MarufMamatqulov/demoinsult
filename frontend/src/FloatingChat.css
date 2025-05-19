@@ -17,6 +17,31 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   font-weight: bold;
+  min-height: 44px; /* Better for touch targets */
+  z-index: 1010; /* Ensure it's clickable */
+}
+
+@media (max-width: 768px) {
+  .floating-chat-container {
+    bottom: 70px;
+    right: 15px;
+    z-index: 1010; /* Higher z-index to ensure it's above other elements */
+  }
+  
+  .floating-chat-button {
+    border-radius: 50%;
+    padding: 0;
+    width: 60px;
+    height: 60px;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1010;
+  }
+  
+  .chat-icon {
+    margin-right: 0;
+    font-size: 28px;
+  }
 }
 
 .floating-chat-button:hover {
@@ -46,6 +71,11 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
+  max-width: 90vw;
+  
+  /* Added z-index to ensure chat appears above other elements */
+  z-index: 1010;
+  max-height: 80vh;
 }
 
 .floating-chat-header {
@@ -95,14 +125,38 @@
 /* Responsive styles */
 @media (max-width: 768px) {
   .floating-chat-window {
-    width: 300px;
-    height: 450px;
-    right: 0;
-    bottom: 0;
+    width: 92vw;
+    height: 75vh;
+    right: 15px;
+    bottom: 70px;
+    border-radius: 12px;
+    max-width: 92vw;
   }
   
-  .floating-chat-container {
-    bottom: 100px;
-    right: 20px;
+  .floating-chat-header {
+    padding: 10px 15px;
+    min-height: 50px;
+  }
+  
+  .floating-chat-header h3 {
+    font-size: 1rem;
+  }
+  
+  .floating-chat-body {
+    padding: 0;
+  }
+  
+  .close-button {
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+  }
+  
+  /* Special styles for iPhone */
+  @media screen and (max-width: 430px) {
+    .floating-chat-window {
+      width: 94vw;
+      right: 10px;
+    }
   }
 }

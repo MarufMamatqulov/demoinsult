@@ -103,6 +103,49 @@
   100% { opacity: 1; transform: scale(1); }
 }
 
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .medical-form-container {
+    margin: 20px auto;
+    padding: 1.5rem 1rem;
+    border-radius: 12px;
+    max-width: 100%;
+  }
+  
+  .form-title {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+  
+  .form-label {
+    font-size: 1rem;
+  }
+  
+  .form-input,
+  .form-select {
+    padding: 10px;
+    font-size: 16px; /* Prevent zoom on iOS */
+    margin-bottom: 0.8rem;
+  }
+  
+  .radio-group {
+    gap: 8px;
+  }
+  
+  .form-submit-btn {
+    margin-top: 1.5rem;
+    padding: 12px 20px;
+    font-size: 1rem;
+    min-height: 44px;
+  }
+  
+  .form-result {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    font-size: 1rem;
+  }
+}
+
 .animate-pop-in {
   animation: pop-in 0.5s cubic-bezier(.4,0,.2,1);
 }
