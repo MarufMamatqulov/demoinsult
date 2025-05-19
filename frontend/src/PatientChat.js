@@ -55,7 +55,6 @@ const PatientChat = ({ patientContext = {} }) => {
       handleSend();
     }
   };
-
   const handleSend = async () => {
     if (!input.trim()) return;
 
@@ -71,27 +70,21 @@ const PatientChat = ({ patientContext = {} }) => {
     setIsTyping(true);
     
     try {
-      // Prepare assessment context if available
-      let assessmentContext = {};
-      if (!patientContext || !patientContext.assessmentType || !patientContext.assessmentResults) {
-        console.log("No assessment context available");
-      } else {
-        assessmentContext = {
-          assessment_type: patientContext.assessmentType,
-          results: patientContext.assessmentResults,
-          language: currentLanguage
-        };
-      }
+      // Prepare chat history for API request
+      const chatHistory = messages
+        .filter(m => m.role !== 'system') // Remove system messages from the history
+        .slice(-6) // Keep only the last 6 messages for context
+        .concat([userMessage]);
       
       // Call API to get response
-      const response = await fetch('/api/chat', {
+      const response = await fetch('http://localhost:8000/chat/patient-chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          message: input,
-          assessment_context: assessmentContext,
+          messages: chatHistory,
+          patient_context: patientContext || {},
           language: currentLanguage
         }),
       });

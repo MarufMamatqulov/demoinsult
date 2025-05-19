@@ -11,6 +11,15 @@ const FloatingChat = ({ assessmentData }) => {
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
+    // Focus the chat input when opened
+    if (!isOpen) {
+      setTimeout(() => {
+        const inputElement = document.querySelector('.floating-chat-body textarea');
+        if (inputElement) {
+          inputElement.focus();
+        }
+      }, 100);
+    }
   };
 
   return (

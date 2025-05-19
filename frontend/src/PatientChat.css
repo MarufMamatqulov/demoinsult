@@ -1,4 +1,4 @@
-.patient-chat-container {
+.chat-container, .patient-chat-container {
   display: flex;
   flex-direction: column;
   height: 100%;
