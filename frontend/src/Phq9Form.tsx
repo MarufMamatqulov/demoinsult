@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './FormMedical.css';
 import AIRecommendations from './AIRecommendations.tsx';
+import { endpoints } from './config/api';
 
 export default function Phq9Form() {
   const { t } = useTranslation();
@@ -30,13 +31,12 @@ export default function Phq9Form() {
 
   const handleChange = (q, value) => {
     setAnswers({ ...answers, [q]: value });
-  };
-  const handleSubmit = async (e) => {
+  };  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setResult(null);
     try {
-      const response = await fetch('http://localhost:8000/phq/analyze', {
+      const response = await fetch(endpoints.phqAnalyze, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(answers)

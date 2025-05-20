@@ -1,7 +1,20 @@
-// Test script for patient chat API
+// Test script for InsultMedAI API endpoints
 const http = require('http');
+const https = require('https');
+const url = require('url');
 
-const data = JSON.stringify({
+// Get the API URL from command line arguments or use default
+const API_URL = process.argv[2] || 'http://localhost:8000';
+console.log(`Using API URL: ${API_URL}`);
+
+// Parse the URL to get hostname, port, and protocol
+const parsedUrl = url.parse(API_URL);
+const isHttps = parsedUrl.protocol === 'https:';
+const hostname = parsedUrl.hostname;
+const port = parsedUrl.port || (isHttps ? 443 : 80);
+
+// Test data for patient chat
+const patientChatData = JSON.stringify({
   messages: [
     {
       role: 'user',
@@ -12,31 +25,55 @@ const data = JSON.stringify({
   language: 'uz'
 });
 
-const options = {
-  hostname: 'localhost',
-  port: 8000,
+// Test data for PHQ-9 analysis
+const phqData = JSON.stringify({
+  answers: [1, 1, 2, 1, 0, 1, 0, 1, 1],
+  language: 'en'
+});
+
+// Configure options for the request
+const patientChatOptions = {
+  hostname: hostname,
+  port: port,
   path: '/chat/patient-chat',
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'Content-Length': data.length
+    'Content-Length': patientChatData.length
   }
 };
 
 console.log('Testing patient chat API...');
 
-const req = http.request(options, res => {
-  console.log(`Status Code: ${res.statusCode}`);
+// Test PHQ-9 endpoint
+const phqOptions = {
+  hostname: hostname,
+  port: port,
+  path: '/phq/analyze',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Content-Length': phqData.length
+  }
+};
+
+// Function to make an HTTP/HTTPS request
+function makeRequest(options, data, testName) {
+  console.log(`Testing ${testName}...`);
   
-  let responseData = '';
-  
-  res.on('data', chunk => {
-    responseData += chunk;
-  });
-  
-  res.on('end', () => {
-    try {
-      const parsedData = JSON.parse(responseData);
+  const httpModule = isHttps ? https : http;
+  const req = httpModule.request(options, res => {
+    console.log(`[${testName}] Status Code: ${res.statusCode}`);
+    
+    let responseData = '';
+    
+    res.on('data', chunk => {
+      responseData += chunk;
+    });
+    
+    res.on('end', () => {
+      try {
+        const parsedData = JSON.parse(responseData);
       console.log('API Response:', parsedData);
       
       if (parsedData.response) {

@@ -1,0 +1,17 @@
+[Unit]
+Description=InsultMedAI Backend
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/InsultMedAI
+ExecStart=/home/ubuntu/InsultMedAI/start_backend.sh
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=insultmedai
+Environment=PYTHONPATH=/home/ubuntu/InsultMedAI
+
+[Install]
+WantedBy=multi-user.target

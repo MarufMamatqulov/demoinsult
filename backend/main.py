@@ -52,10 +52,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 # Load the trained model
 model = joblib.load(os.path.abspath(os.path.join(os.path.dirname(__file__), "../ml_models/phq_model.pkl")))
 
-# Middleware setup
+# Configure CORS middleware to allow requests from the frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for development
+    allow_origins=["*"],  # For production, consider specifying your Vercel domain
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
