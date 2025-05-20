@@ -19,7 +19,7 @@
 ## Deployment Instructions
 
 ### Step 1: Deploy Backend
-1. [x] Replace YOUR_EC2_IP with your actual EC2 IP address in:
+1. [x] Replace YOUR_EC2_IP with your actual EC2 IP address (16.170.244.228) in:
    - deploy-backend.ps1
    - frontend/.env.production
    - frontend/vercel.json
@@ -32,31 +32,44 @@
    
 3. [x] Verify backend is running:
    ```
-   http://YOUR_EC2_IP:8000/docs
+   http://16.170.244.228:8000/docs
    ```
 
 ### Step 2: Deploy Frontend
-1. [ ] Push your code to GitHub:
+1. [ ] Fix dependency conflicts:
+   ```powershell
+   cd c:\Users\Marufjon\InsultMedAI
+   .\fix-vercel-deploy.ps1
+   ```
+
+2. [ ] Test API connectivity:
+   ```powershell
+   cd c:\Users\Marufjon\InsultMedAI
+   .\test-deployment.ps1
+   ```
+
+3. [ ] Push your code to GitHub:
    ```powershell
    git init
    git remote add origin YOUR_GITHUB_REPO_URL
    git add .
-   git commit -m "Initial commit for deployment"
+   git commit -m "Ready for deployment"
    git push -u origin main
    ```
    
-2. [ ] Deploy on Vercel:
+4. [ ] Deploy on Vercel:
    - Create new project on Vercel
    - Connect to your GitHub repository
    - Configure build settings:
      - Root Directory: frontend
      - Build Command: npm run build
      - Output Directory: build
+     - Install Command: npm install --legacy-peer-deps
    - Add environment variables:
-     - REACT_APP_API_URL: http://YOUR_EC2_IP:8000
+     - REACT_APP_API_URL: http://16.170.244.228:8000
    - Deploy
 
-3. [ ] Verify frontend deployment:
+5. [ ] Verify frontend deployment:
    - Open the Vercel URL
    - Test the PHQ-9 form and other features
 

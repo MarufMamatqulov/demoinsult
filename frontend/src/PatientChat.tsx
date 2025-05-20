@@ -268,8 +268,8 @@ const PatientChat = ({ patientContext = {} as PatientChatProps['patientContext']
       <div className="chat-footer">
         <p>{t('chat.disclaimer', 'This AI assistant provides general information and is not a replacement for professional medical advice.')}</p>
       </div>
-    </div>
+        </div>
   );
-};
+}
 
 export default PatientChat;
