@@ -69,5 +69,5 @@ ssh -i "c:\Users\Marufjon\InsultMedAI\ec2-kp.pem" ubuntu@YOUR_EC2_IP "sudo syste
 Write-Host "Checking service status..." -ForegroundColor Green
 ssh -i "c:\Users\Marufjon\InsultMedAI\ec2-kp.pem" ubuntu@YOUR_EC2_IP "sudo systemctl status insultmedai"
 
-Write-Host "Backend deployment complete! The API should be available at: http://YOUR_EC2_IP:8000" -ForegroundColor Green
+Write-Host "Backend deployment complete! The API should be available at: http://16.170.244.228:8000" -ForegroundColor Green
 Write-Host "⚠️ Make sure to update the EC2 IP address in the frontend .env file and vercel.json before deploying the frontend!" -ForegroundColor Yellow

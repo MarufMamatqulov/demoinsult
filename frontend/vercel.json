@@ -1,9 +1,11 @@
-{
-  "version": 2,
+{  "version": 2,
   "builds": [
     {
       "src": "package.json",
-      "use": "@vercel/node"
+      "use": "@vercel/cra",
+      "config": {
+        "installCommand": "npm install --legacy-peer-deps"
+      }
     }
   ],
   "routes": [
