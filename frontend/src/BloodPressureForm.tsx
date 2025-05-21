@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './FormMedical.css';
-import AIRecommendations from './AIRecommendations.tsx';
+import AIRecommendations from './AIRecommendations';
 
 export default function BloodPressureForm() {
   const { t } = useTranslation();

@@ -93,8 +93,9 @@ const RehabilitationExercises = () => {
                 onClick={() => handleVideoClick(video)}
               >
                 <div className="thumbnail-image">                  <img src={video.thumbnail} alt={getTitle(video)} onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = '/images/video-placeholder.jpg';
+                    const target = e.target as HTMLImageElement;
+                    target.onerror = null;
+                    target.src = '/images/video-placeholder.jpg';
                   }} />
                   <div className="play-icon">▶</div>
                 </div>
@@ -117,8 +118,9 @@ const RehabilitationExercises = () => {
                 rel="noopener noreferrer"
               >
                 <div className="article-image">                  <img src={article.thumbnail} alt={getTitle(article)} onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = '/images/article-placeholder.jpg';
+                    const target = e.target as HTMLImageElement;
+                    target.onerror = null;
+                    target.src = '/images/article-placeholder.jpg';
                   }} />
                 </div>
                 <h4>{getTitle(article)}</h4>
@@ -141,8 +143,9 @@ const RehabilitationExercises = () => {
                 rel="noopener noreferrer"
               >
                 <div className="cognitive-image">                  <img src={exercise.thumbnail} alt={getTitle(exercise)} onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = '/images/cognitive-placeholder.jpg';
+                    const target = e.target as HTMLImageElement;
+                    target.onerror = null;
+                    target.src = '/images/cognitive-placeholder.jpg';
                   }} />
                 </div>
                 <h4>{getTitle(exercise)}</h4>

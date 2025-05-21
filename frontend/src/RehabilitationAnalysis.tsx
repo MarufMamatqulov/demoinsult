@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import RehabilitationExercises from './RehabilitationExercises.tsx';
+import RehabilitationExercises from './RehabilitationExercises';
 import './RehabilitationAnalysis.css';
 
 const RehabilitationAnalysis = () => {

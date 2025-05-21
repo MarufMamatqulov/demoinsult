@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import './FormMedical.css';
 import { getPatientInfoLabels, getFormActionText, getLocalizedMessages } from './utils/languageUtils';
 import { useAssessment } from './AssessmentContext.js';
-import AIRecommendations from './AIRecommendations.tsx';
+import AIRecommendations from './AIRecommendations';
 
 const questions = {
   en: [

@@ -582,3 +582,71 @@
     margin-top: 12px;
   }
 }
+
+/* Touch Interaction Improvements */
+.touch-active {
+  opacity: 0.7;
+  transform: scale(0.98);
+  transition: all 0.1s ease-out !important;
+}
+
+/* Improved tap targets for mobile */
+@media screen and (max-width: 768px) {
+  a, button, .clickable, input[type="submit"], .form-radio, .dropdown-toggle {
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 77, 153, 0.1);
+    touch-action: manipulation;
+    min-height: 44px; /* Apple's recommended touch target size */
+    min-width: 44px;
+  }
+  
+  /* Fix iOS issues with buttons */
+  button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  
+  /* Active state visual feedback for improved touch experience */
+  a:active, button:active, .clickable:active, 
+  input[type="submit"]:active, .form-radio:active, 
+  input[type="radio"] + label:active, 
+  input[type="checkbox"] + label:active {
+    opacity: 0.7;
+    transform: scale(0.98);
+    transition: all 0.1s ease-out !important;
+  }
+  
+  /* Ensure radio buttons and checkboxes are tappable */
+  input[type="radio"], 
+  input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    margin-right: 10px;
+  }
+  
+  /* Ensure selectable items have proper spacing */
+  .form-radio, .tab, .dropdown-item, .nav-link {
+    margin-bottom: 8px;
+    padding: 10px 12px;
+  }
+  
+  /* iOS Safari specific fixes */
+  @supports (-webkit-touch-callout: none) {
+    input, 
+    textarea,
+    select,
+    button {
+      font-size: 16px !important; /* Prevent zoom */
+    }
+    
+    /* Fix scrolling issues */
+    .scrollable-content {
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Fix tap delay */
+    a, button, .clickable {
+      touch-action: manipulation;
+    }
+  }
+}

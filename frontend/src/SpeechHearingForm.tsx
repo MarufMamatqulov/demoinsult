@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import './FormMedical.css';
 import { getPatientInfoLabels, getFormActionText, getLocalizedMessages } from './utils/languageUtils';
 import { useAssessment } from './AssessmentContext.js';
-import AIRecommendations from './AIRecommendations.tsx';
+import AIRecommendations from './AIRecommendations';
 
 const questions = {
   en: [
@@ -98,9 +98,8 @@ export default function SpeechHearingForm() {
   const [loading, setLoading] = useState(false);
   const { setAssessmentData: setContextAssessmentData } = useAssessment();
 
-  const currentLanguage = i18n.language.startsWith('es') ? 'es' : 
-                          i18n.language.startsWith('ru') ? 'ru' : 
-                          i18n.language.startsWith('uz') ? 'uz' : 'en';
+  // Refactored currentLanguage logic
+  const currentLanguage = i18n.language.startsWith('es') ? 'es' : (i18n.language.startsWith('ru') ? 'ru' : (i18n.language.startsWith('uz') ? 'uz' : 'en'));
 
   const handleScoreChange = (index, value) => {
     const newScores = [...scores];

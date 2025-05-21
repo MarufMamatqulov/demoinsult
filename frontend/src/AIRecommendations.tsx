@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import './AIRecommendations.css';
 
@@ -15,11 +15,10 @@ const AIRecommendations: React.FC<AIRecommendationsProps> = ({ assessmentType, a
   const [error, setError] = useState<string | null>(null);
   const [aiResponse, setAiResponse] = useState<string | null>(null);
   const [recommendations, setRecommendations] = useState<string[] | null>(null);
-  const [fallbackAnalysis, setFallbackAnalysis] = useState('');
   const [question, setQuestion] = useState('');
   
   // Function to get analysis - defined BEFORE useEffect
-  const getAnalysis = () => {
+  const getAnalysis = useCallback(() => {
     setLoading(true);
     setError(null);
     
@@ -36,10 +35,11 @@ const AIRecommendations: React.FC<AIRecommendationsProps> = ({ assessmentType, a
         } else {
           localFallbackAnalysis = "Your blood pressure appears to be in the normal range. Continue maintaining a healthy lifestyle.";
         }
-      }
-    } else if (assessmentType === "phq9") {
+      }    } else if (assessmentType === "phq9") {
       // Calculate total score for PHQ-9
-      const total = Object.values(assessmentData || {}).reduce((sum: number, val: any) => sum + (Number(val) || 0), 0);
+      // Fixed type issue for 'total'
+      const total = Object.values(assessmentData || {}).reduce((sum: number, val: unknown) => sum + Number(val), 0);
+      // Updated comparisons
       if (total >= 15) {
         localFallbackAnalysis = "Your responses indicate moderately severe to severe depression symptoms. Please consider seeking professional help.";
       } else if (total >= 10) {
@@ -48,9 +48,8 @@ const AIRecommendations: React.FC<AIRecommendationsProps> = ({ assessmentType, a
         localFallbackAnalysis = "Your responses indicate mild depression symptoms. Monitoring your symptoms and discussing with a healthcare provider may be beneficial.";
       } else {
         localFallbackAnalysis = "Your responses indicate minimal or no depression symptoms. Maintaining mental wellness activities is recommended.";
-      }
-    } else if (assessmentType === "nihss") {
-      const total = Object.values(assessmentData || {}).reduce((sum: number, val: any) => sum + (Number(val) || 0), 0);
+      }    } else if (assessmentType === "nihss") {
+      const total = Object.values(assessmentData || {}).reduce((sum: number, val: unknown) => sum + Number(val), 0);
       if (total >= 16) {
         localFallbackAnalysis = "Your NIHSS score suggests a severe stroke. Immediate medical attention and intensive rehabilitation may be required.";
       } else if (total >= 5) {
@@ -60,7 +59,7 @@ const AIRecommendations: React.FC<AIRecommendationsProps> = ({ assessmentType, a
       }
     }
     
-    setFallbackAnalysis(localFallbackAnalysis);
+    // Removed fallbackAnalysis state update
     
     // Make API request
     axios.post('http://localhost:8000/ai/rehabilitation/analysis', {
@@ -95,7 +94,7 @@ const AIRecommendations: React.FC<AIRecommendationsProps> = ({ assessmentType, a
     .finally(() => {
       setLoading(false);
     });
-  };
+  }, [assessmentType, assessmentData, language]);
 
   // Auto-analyze on component mount if assessment data is available
   useEffect(() => {
@@ -106,7 +105,7 @@ const AIRecommendations: React.FC<AIRecommendationsProps> = ({ assessmentType, a
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [assessmentType, assessmentData, language]);
+  }, [assessmentType, assessmentData, language, getAnalysis]);
 
   // Function to handle user questions about their assessment
   const askQuestion = (questionText: string) => {
@@ -251,3 +250,5 @@ const AIRecommendations: React.FC<AIRecommendationsProps> = ({ assessmentType, a
 };
 
 export default AIRecommendations;
+
+export {};

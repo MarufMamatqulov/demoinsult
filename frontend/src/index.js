@@ -29,12 +29,21 @@ import PatientChat from './PatientChat.js';
 import { AssessmentProvider } from './AssessmentContext.js';
 // Import FloatingChat component
 import FloatingChat from './FloatingChat.js';
-// Import LanguageSelector component
-import LanguageSelector from './LanguageSelector.js';
 
 // Initialize mobile optimizations
 document.addEventListener('DOMContentLoaded', () => {
   initMobileOptimizations();
+  
+  // Enable mobile interaction testing in development mode
+  if (process.env.NODE_ENV === 'development') {
+    import('./utils/mobileTest').then(module => {
+      // Optional: Enable mobile test button for interactive testing
+      module.initMobileInteractionTesting();
+      
+      // Uncomment the line below to enable touch event logging for debugging
+      // module.enableTouchEventLogging();
+    });
+  }
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

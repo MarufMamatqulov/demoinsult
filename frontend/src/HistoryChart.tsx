@@ -57,27 +57,6 @@ export default function HistoryChart({ patientId }) {
         fetchData();
     }, [chartType, daysFilter, patientId]);
 
-    const formatChartData = () => {
-        if (!data) return null;
-
-        const labels = data.map((entry) => new Date(entry.measurement_time).toLocaleDateString());
-        const values = data.map((entry) =>
-            chartType === 'blood-pressure' ? entry.systolic : entry.value || entry.score
-        );
-
-        return {
-            labels,
-            datasets: [
-                {
-                    label: chartType === 'blood-pressure' ? 'Systolic BP' : 'Value',
-                    data: values,
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                },
-            ],
-        };
-    };
-
     const getAlertColor = () => {
         if (!alert) return '';
         switch (alert.status) {
