@@ -1,24 +1,11 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "frontend/package.json",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["frontend/**"],
-        "buildCommand": "cd frontend && npm install --legacy-peer-deps && npm run build",
-        "outputDirectory": "frontend/build"
-      }
-    }
-  ],
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/static/(.*)", "dest": "/frontend/static/$1" },
-    { "src": "/(.*).png", "dest": "/frontend/$1.png" },
-    { "src": "/(.*).jpg", "dest": "/frontend/$1.jpg" },
-    { "src": "/(.*).json", "dest": "/frontend/$1.json" },
-    { "src": "/(.*).ico", "dest": "/frontend/$1.ico" },
-    { "src": "/(.*)", "dest": "/frontend/index.html" }
+  "buildCommand": "cd frontend && npm install --legacy-peer-deps && npm run build",
+  "outputDirectory": "frontend/build",
+  "framework": "create-react-app",
+  "rewrites": [
+    { "source": "/static/(.*)", "destination": "/static/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "env": {
     "REACT_APP_API_URL": "https://your-backend-url.com",
