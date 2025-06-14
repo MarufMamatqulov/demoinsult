@@ -8,6 +8,24 @@ Before you start, make sure you have:
 
 1. Successfully deployed the backend to EC2 (IP: 16.170.244.228)
 2. Fixed all dependency issues in the frontend code
+
+## TypeScript Dependency Issue Fix
+
+If you're seeing the error with TypeScript and i18next dependencies, follow these steps:
+
+1. Update `package.json` resolutions to include i18next:
+```json
+"resolutions": {
+  "typescript": "4.9.5",
+  "@types/react": "18.2.15",
+  "i18next": "22.5.0"
+}
+```
+
+2. Make sure `.npmrc` file in your frontend directory contains:
+```
+legacy-peer-deps=true
+```
 3. A GitHub account (recommended for easier Vercel deployment)
 4. A Vercel account (sign up at https://vercel.com if you don't have one)
 
