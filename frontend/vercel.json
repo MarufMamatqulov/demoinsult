@@ -3,7 +3,7 @@
   "builds": [
     {
       "src": "package.json", 
-      "use": "@vercel/cra",
+      "use": "@vercel/static-build",
       "config": {
         "installCommand": "npm install --legacy-peer-deps",
         "buildCommand": "npm run build"
