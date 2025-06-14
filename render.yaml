@@ -1,0 +1,36 @@
+# InsultMedAI Render.com Deployment
+services:
+  - type: web
+    name: insultmedai-backend
+    env: python
+    buildCommand: ./build.sh
+    startCommand: ./start_backend.sh
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: PRODUCTION
+        value: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: insultmedai-db
+          property: connectionString
+      - key: OPENAI_API_KEY
+        sync: false  # Manually set this in Render dashboard for security
+
+  - type: web
+    name: insultmedai-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://insultmedai-backend.onrender.com
+
+  - type: redis
+    name: insultmedai-cache
+    ipAllowList: []  # Allow all traffic
+    plan: free  # Using the free plan
+
+databases:
+  - name: insultmedai-db
+    plan: free  # Using the free plan

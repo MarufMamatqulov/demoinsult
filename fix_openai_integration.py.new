@@ -1,0 +1,112 @@
+"""
+This script patches the OpenAI integration to ensure the API key is properly loaded
+and utilized in API calls.
+"""
+
+import os
+import logging
+import sys
+from dotenv import load_dotenv
+
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+
+def find_api_key_in_env_file(file_path):
+    """Find an OpenAI API key in an .env file."""
+    if not os.path.exists(file_path):
+        return None
+    
+    try:
+        with open(file_path, 'r') as f:
+            for line in f:
+                if line.strip().startswith('OPENAI_API_KEY='):
+                    api_key = line.strip().split('=', 1)[1].strip()
+                    # Remove quotes if present
+                    if api_key.startswith('"') and api_key.endswith('"'):
+                        api_key = api_key[1:-1]
+                    elif api_key.startswith("'") and api_key.endswith("'"):
+                        api_key = api_key[1:-1]
+                    
+                    if api_key and not api_key.startswith("sk-placeholder"):
+                        logging.info(f"Found valid OpenAI API key in {file_path}")
+                        return api_key
+                    elif api_key and api_key.startswith("sk-placeholder"):
+                        logging.warning(f"Found placeholder API key in {file_path}, continuing search")
+    except Exception as e:
+        logging.error(f"Error reading {file_path}: {str(e)}")
+    
+    return None
+
+def fix_openai_integration():
+    """Fix the OpenAI integration by properly setting up the API key"""
+    try:
+        # Try to load from .env file
+        load_dotenv()
+        
+        # Get API key from environment
+        api_key = os.getenv("OPENAI_API_KEY")
+        
+        # Check if it's a placeholder key that should be replaced
+        if api_key and api_key.startswith("sk-placeholder"):
+            logging.warning("Found placeholder API key in environment, will search for a real key")
+            api_key = None
+        
+        # If not found in environment or it's a placeholder, try to read directly from .env files
+        if not api_key:
+            # Check backend/.env
+            backend_env_path = os.path.join(os.path.dirname(__file__), "backend", ".env")
+            api_key = find_api_key_in_env_file(backend_env_path)
+            
+            # Check project root .env if still not found
+            if not api_key:
+                root_env_path = os.path.join(os.path.dirname(__file__), ".env")
+                api_key = find_api_key_in_env_file(root_env_path)
+        
+        if api_key:
+            # Set the API key in the environment for all modules to access
+            os.environ["OPENAI_API_KEY"] = api_key
+            
+            # Mask key for secure logging
+            masked_key = f"{api_key[:8]}...{api_key[-4:]}" if len(api_key) > 12 else "***masked***"
+            logging.info(f"Set OpenAI API key in environment: {masked_key}")
+            
+            # Also set up the OpenAI client if available
+            try:
+                # For new OpenAI client (>=1.0.0)
+                from openai import OpenAI
+                client = OpenAI(api_key=api_key)
+                logging.info("Set up new OpenAI client with API key")
+                return True
+            except ImportError:
+                try:
+                    # For legacy OpenAI client (<1.0.0)
+                    import openai
+                    openai.api_key = api_key
+                    logging.info("Set up legacy OpenAI client with API key")
+                    return True
+                except ImportError:
+                    logging.warning("Could not import any OpenAI client, but API key is set in environment")
+                    return True
+        else:
+            logging.error("Could not find a valid OpenAI API key in any location")
+            return False
+    except Exception as e:
+        logging.error(f"Error fixing OpenAI integration: {str(e)}")
+        return False
+
+# Run the fix when this module is imported
+if __name__ == "__main__":
+    success = fix_openai_integration()
+    if success:
+        logging.info("Successfully fixed OpenAI integration")
+        sys.exit(0)
+    else:
+        logging.error("Failed to fix OpenAI integration")
+        sys.exit(1)
+else:
+    # When imported as a module, run the fix automatically
+    success = fix_openai_integration()
+    if success:
+        logging.info("Successfully fixed OpenAI integration on import")
+    else:
+        logging.warning("Failed to fix OpenAI integration on import")

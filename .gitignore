@@ -65,6 +65,21 @@ frontend/build/
 # Environment variables
 .env
 .env.*
+backend/.env
+frontend/.env
+
+# API keys and Security related files
+*api-key*.ps1
+*api_key*.ps1
+set-openai-api-key.ps1
+fix-openai-api-key.ps1
+*_token.txt
+test_token.txt
+ec2-kp.pem
+*.pem
+*.key
+*.crt
+*.cer
 
 # Docker
 *.log

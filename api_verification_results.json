@@ -1,0 +1,10 @@
+{
+  "timestamp": "2025-05-27T07:45:01.263666",
+  "duration_seconds": 13.030828,
+  "all_passed": false,
+  "test_results": {
+    "openai_integration": false,
+    "rate_limiting": false,
+    "assessment_history": false
+  }
+}

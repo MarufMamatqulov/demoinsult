@@ -162,6 +162,109 @@ body {
   transform: translateY(-2px) scale(1.04);
 }
 
+/* User welcome section styles */
+.user-welcome-section {
+  width: 100%;
+  max-width: 1200px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.user-welcome-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(90deg, #00BCD4, #3F51B5);
+}
+
+.user-welcome-section h2 {
+  color: #006d77;
+  font-size: 1.8rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.user-welcome-section p {
+  color: #546E7A;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.quick-link {
+  background-color: #e0f7fa;
+  color: #006d77;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.quick-link:hover {
+  background-color: #006d77;
+  color: white;
+}
+
+.recent-assessments {
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+.recent-assessments h3 {
+  color: #455A64;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.recent-assessments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.recent-assessment-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+.recent-assessment-item:hover {
+  background-color: #e1f5fe;
+  transform: translateX(5px);
+}
+
+.assessment-type {
+  font-weight: 500;
+  color: #0277bd;
+}
+
+.assessment-date {
+  color: #78909c;
+  font-size: 0.9rem;
+}
+
 @media (max-width: 700px) {
   .dashboard-title {
     font-size: 1.6rem;

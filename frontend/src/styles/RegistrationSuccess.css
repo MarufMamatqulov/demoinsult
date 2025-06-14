@@ -1,0 +1,60 @@
+/* Registration Success Page Styles */
+.success-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.success-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  background-color: #2ecc71;
+  border-radius: 50%;
+  color: white;
+  font-size: 40px;
+  margin-bottom: 1.5rem;
+}
+
+.success-message {
+  margin: 1.5rem 0;
+}
+
+.email-sent-to {
+  margin: 1rem 0;
+  font-size: 1.1rem;
+}
+
+.verification-instructions {
+  color: #7f8c8d;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.registration-help {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.registration-help a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.registration-help a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 576px) {
+  .success-icon {
+    width: 64px;
+    height: 64px;
+    font-size: 32px;
+  }
+}

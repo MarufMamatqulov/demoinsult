@@ -16,7 +16,14 @@ The Stroke Rehabilitation AI Platform is designed to assist healthcare professio
    git clone <repository-url>
    cd InsultML
    ```
-2. Install dependencies:
+2. Set up environment variables:
+   - Copy the `.env.template` file to `.env` and update with your configuration:
+     ```bash
+     cp .env.template .env
+     # Edit .env with your settings
+     ```
+
+3. Install dependencies:
    - Backend:
      ```bash
      pip install -r requirements.txt
@@ -26,7 +33,7 @@ The Stroke Rehabilitation AI Platform is designed to assist healthcare professio
      cd frontend
      npm install
      ```
-3. Run the application:
+4. Run the application:
    - Backend:
      ```bash
      uvicorn backend.main:app --reload
@@ -36,7 +43,7 @@ The Stroke Rehabilitation AI Platform is designed to assist healthcare professio
      cd frontend
      npm start
      ```
-4. Alternatively, use Docker:
+5. Alternatively, use Docker:
    ```bash
    docker-compose up --build
    ```
@@ -83,3 +90,40 @@ Additional documentation can be found in the `docs` directory:
 
 ## Contribution
 Feel free to contribute by submitting issues or pull requests. For major changes, please open an issue first to discuss what you would like to change.
+
+## Verification Scripts
+
+The following scripts are available to verify the platform's functionality:
+
+1. **Assessment History Verification**:
+   ```bash
+   .\verify-assessment-history.ps1
+   ```
+   Verifies that the assessment history endpoints are working correctly.
+
+2. **Email Configuration Verification**:
+   ```bash
+   .\verify-email-configuration.ps1
+   ```
+   Tests the email configuration and sends a test email.
+
+3. **OpenAI Integration Verification**:
+   ```bash
+   .\verify-openai-integration.ps1
+   ```
+   Verifies that the OpenAI integration is working correctly.
+
+4. **Comprehensive Verification**:
+   ```bash
+   .\verify-all-fixes.ps1
+   ```
+   Runs all verification scripts and generates a comprehensive report.
+
+## Documentation
+
+Detailed documentation is available in the following files:
+
+- `FIXES_DOCUMENTATION.md` - Detailed documentation of all fixes implemented
+- `FINAL_VERIFICATION_SUMMARY.md` - Summary of verification results
+- `EMAIL_CONFIGURATION_GUIDE.md` - Guide for configuring email settings
+- `ASSESSMENT_HISTORY_VERIFICATION_RESULTS.md` - Results of assessment history endpoint testing

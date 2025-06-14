@@ -15,3 +15,11 @@ requests>=2.30.0  # For API requests
 pydantic-settings>=2.0.0  # For settings management
 joblib>=1.2.0  # For model loading
 starlette>=0.27.0  # For FastAPI middleware
+# Auth dependencies
+python-jose[cryptography]>=3.3.0  # For JWT tokens
+passlib[bcrypt]>=1.7.4  # For password hashing
+email-validator>=2.0.0  # For email validation
+google-auth>=2.22.0  # For Google OAuth2
+google-auth-oauthlib>=1.0.0  # For Google OAuth2 integration
+requests-oauthlib>=1.3.1  # For OAuth2 requests
+alembic>=1.12.0  # For database migrations

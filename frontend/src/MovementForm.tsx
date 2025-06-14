@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from './context/AuthContext';
+import axios from 'axios';
 import './FormMedical.css';
 import { getPatientInfoLabels, getFormActionText, getLocalizedMessages } from './utils/languageUtils';
 import { useAssessment } from './AssessmentContext.js';
@@ -102,6 +104,7 @@ const scoreDescriptions = {
 
 export default function MovementForm() {
   const { t, i18n } = useTranslation();
+  const { token, isAuthenticated } = useAuth();
   const [patientName, setPatientName] = useState('');
   const [patientAge, setPatientAge] = useState('');
   const [relationship, setRelationship] = useState('');
@@ -109,6 +112,9 @@ export default function MovementForm() {
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
   const { setAssessmentData: setContextAssessmentData } = useAssessment();
+  
+  // API URL from environment variable
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   const currentLanguage = i18n.language.startsWith('es') ? 'es' : 
                           i18n.language.startsWith('ru') ? 'ru' : 
@@ -216,6 +222,36 @@ export default function MovementForm() {
       }
       
       setResult(formattedResult);
+      
+      // If user is authenticated, save the assessment to their history
+      if (isAuthenticated && token) {
+        try {
+          await axios.post(`${API_URL}/assessments`, {
+            type: 'movement',
+            data: {
+              upper_limb_score: data.upper_limb_score,
+              lower_limb_score: data.lower_limb_score,
+              balance_score: data.balance_score,
+              total_score: data.total_score,
+              upper_limb_level: data.upper_limb_level,
+              lower_limb_level: data.lower_limb_level,
+              balance_level: data.balance_level,
+              overall_level: data.overall_level,
+              patient_name: patientName,
+              patient_age: parseInt(patientAge),
+              recommendations: data.recommendations || ''
+            }
+          }, { 
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          console.log('Movement assessment saved to user history');
+        } catch (historyErr) {
+          console.error('Failed to save Movement assessment to history:', historyErr);
+        }
+      }
     } catch (err) {
       setResult(t('errors.assessment'));
     }

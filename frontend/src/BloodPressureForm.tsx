@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from './context/AuthContext';
+import axios from 'axios';
 import './FormMedical.css';
 import AIRecommendations from './AIRecommendations';
 
 export default function BloodPressureForm() {
   const { t } = useTranslation();
+  const { token, isAuthenticated } = useAuth();
   const [systolic, setSystolic] = useState('');
   const [diastolic, setDiastolic] = useState('');
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
+  
+  // API URL from environment variable
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -22,23 +29,42 @@ export default function BloodPressureForm() {
         throw new Error("Please enter valid blood pressure values");
       }
       
-      const response = await fetch('http://localhost:8000/bp/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          systolic: systolicNum, 
-          diastolic: diastolicNum 
-        })
-      });
+      // Set up headers with auth token if user is authenticated
+      const headers = {
+        'Content-Type': 'application/json'
+      };
       
-      if (!response.ok) {
-        throw new Error(`Server responded with status: ${response.status}`);
+      if (isAuthenticated && token) {
+        headers['Authorization'] = `Bearer ${token}`;
       }
       
-      const data = await response.json();
+      // Send the request
+      const response = await axios.post(`${API_URL}/bp/analyze`, { 
+        systolic: systolicNum, 
+        diastolic: diastolicNum 
+      }, { headers });
       
-      // Set result even if message is undefined
-      setResult(data.message || 'Blood pressure analysis complete.');
+      // Set result
+      setResult(response.data.message || 'Blood pressure analysis complete.');
+      
+      // If user is authenticated, also save the assessment to their history
+      if (isAuthenticated && token) {
+        try {
+          await axios.post(`${API_URL}/assessments`, {
+            type: 'blood_pressure',
+            data: {
+              systolic: systolicNum,
+              diastolic: diastolicNum,
+              classification: response.data.classification || 'Unknown',
+              message: response.data.message || '',
+              recommendations: response.data.recommendations || ''
+            }
+          }, { headers });
+          console.log('Blood pressure assessment saved to user history');
+        } catch (historyErr) {
+          console.error('Failed to save assessment to history:', historyErr);
+        }
+      }
     } catch (err) {
       console.error("Blood pressure analysis error:", err);
       setResult(`Error analyzing blood pressure: ${err.message || 'Unknown error'}`);

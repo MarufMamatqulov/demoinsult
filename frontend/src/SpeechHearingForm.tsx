@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from './context/AuthContext';
+import axios from 'axios';
 import './FormMedical.css';
 import { getPatientInfoLabels, getFormActionText, getLocalizedMessages } from './utils/languageUtils';
 import { useAssessment } from './AssessmentContext.js';
@@ -90,6 +92,7 @@ const scoreDescriptions = {
 
 export default function SpeechHearingForm() {
   const { t, i18n } = useTranslation();
+  const { token, isAuthenticated } = useAuth();
   const [patientName, setPatientName] = useState('');
   const [patientAge, setPatientAge] = useState('');
   const [relationship, setRelationship] = useState('');
@@ -97,6 +100,9 @@ export default function SpeechHearingForm() {
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
   const { setAssessmentData: setContextAssessmentData } = useAssessment();
+  
+  // API URL from environment variable
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   // Refactored currentLanguage logic
   const currentLanguage = i18n.language.startsWith('es') ? 'es' : (i18n.language.startsWith('ru') ? 'ru' : (i18n.language.startsWith('uz') ? 'uz' : 'en'));
@@ -199,6 +205,34 @@ export default function SpeechHearingForm() {
       }
       
       setResult(formattedResult);
+      
+      // If user is authenticated, save the assessment to their history
+      if (isAuthenticated && token) {
+        try {
+          await axios.post(`${API_URL}/assessments`, {
+            type: 'speech_hearing',
+            data: {
+              speech_score: data.speech_score,
+              hearing_score: data.hearing_score,
+              total_score: data.total_score,
+              speech_level: data.speech_level,
+              hearing_level: data.hearing_level,
+              overall_level: data.overall_level,
+              patient_name: patientName,
+              patient_age: parseInt(patientAge),
+              recommendations: data.recommendations || ''
+            }
+          }, { 
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          console.log('Speech-Hearing assessment saved to user history');
+        } catch (historyErr) {
+          console.error('Failed to save Speech-Hearing assessment to history:', historyErr);
+        }
+      }
     } catch (err) {
       setResult(t('errors.assessment'));
     }

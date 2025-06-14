@@ -8,7 +8,7 @@ import os
 # Add project root to Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from ml_models.phq_model import predict_phq_level, analyze_phq9
-from schemas.phq9 import PHQ9Request, PHQ9Response
+from backend.schemas.phq9 import PHQ9Request, PHQ9Response
 router = APIRouter()
 
 # Load the PHQ-9 model

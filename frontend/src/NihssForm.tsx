@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from './context/AuthContext';
+import axios from 'axios';
 import './FormMedical.css';
 import AIRecommendations from './AIRecommendations';
 
 export default function NihssForm() {
   const { t } = useTranslation();
+  const { token, isAuthenticated } = useAuth();
   const [formData, setFormData] = useState({
     nihs_1: '', nihs_2: '', nihs_3: '', nihs_4: '', nihs_5: '',
     nihs_6: '', nihs_7: '', nihs_8: '', nihs_9: '', nihs_10: '', nihs_11: ''
   });
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  
+  // API URL from environment variable
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   const questions = [
     { label: t('nihss.q1'), max: 3, example: t('nihss.q1_example') },
@@ -36,13 +42,43 @@ export default function NihssForm() {
     setLoading(true);
     setResult(null);
     try {
+      // Set up headers with auth token if user is authenticated
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+      
+      if (isAuthenticated && token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
       const response = await fetch('/nihss/analyze', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: headers,
         body: JSON.stringify(formData)
       });
       const data = await response.json();
       setResult(data.severity);
+      
+      // Calculate total score
+      const totalScore = Object.values(formData).reduce((sum, val) => sum + (parseInt(val) || 0), 0);
+      
+      // If user is authenticated, save the assessment to their history
+      if (isAuthenticated && token) {
+        try {
+          await axios.post(`${API_URL}/assessments`, {
+            type: 'nihss',
+            data: {
+              answers: formData,
+              total_score: totalScore,
+              severity: data.severity,
+              recommendations: data.recommendations || ''
+            }
+          }, { headers });
+          console.log('NIHSS assessment saved to user history');
+        } catch (historyErr) {
+          console.error('Failed to save NIHSS assessment to history:', historyErr);
+        }
+      }
     } catch (err) {
       setResult('Xatolik yuz berdi. NIHSS tahlil qilinmadi.');
     }

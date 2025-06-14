@@ -2,8 +2,10 @@ from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
 import logging
-import openai
 import json
+
+# Import our custom OpenAI helper for version compatibility
+from backend.utils.openai_helper import create_chat_completion
 
 router = APIRouter()
 
@@ -54,7 +56,8 @@ async def get_chat_response(request: ChatRequest):
         # Add conversation history
         for message in request.messages:
             openai_messages.append({"role": message.role, "content": message.content})
-          # Select appropriate language instruction
+        
+        # Select appropriate language instruction
         language_instruction = ""
         if request.language == "es":
             language_instruction = "Please respond in Spanish."
@@ -86,16 +89,15 @@ async def get_chat_response(request: ChatRequest):
         
         logging.info(f"Sending chat request to OpenAI with {len(openai_messages)} messages")
         
-        # Call OpenAI API
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+        # Call OpenAI API using our helper function
+        chat_response = create_chat_completion(
             messages=openai_messages,
+            model="gpt-3.5-turbo",
             max_tokens=500,
             temperature=0.7
         )
         
-        chat_response = response.choices[0].message['content'].strip()
-          # Generate additional health advice if this is a question about assessment results
+        # Generate additional health advice if this is a question about assessment results
         advice = None
         if any(keyword in str(request.messages[-1].content).lower() for keyword in 
                ["result", "score", "assessment", "test", "evaluation", "natija", "baho", "результат", "оценка"]):
@@ -111,15 +113,16 @@ async def get_chat_response(request: ChatRequest):
             
             advice_prompt = f"{context_info}Based on the patient's assessment results, provide 3-5 specific and personalized recommendations for stroke rehabilitation. Include specific exercises, lifestyle changes, and monitoring advice. {language_instruction}"
             
-            advice_response = openai.ChatCompletion.create(
+            # Use our helper for the advice response too
+            advice = create_chat_completion(
+                messages=[
+                    {"role": "system", "content": system_message}, 
+                    {"role": "user", "content": advice_prompt}
+                ],
                 model="gpt-3.5-turbo",
-                messages=[{"role": "system", "content": system_message}, 
-                          {"role": "user", "content": advice_prompt}],
                 max_tokens=400,
                 temperature=0.7
             )
-            
-            advice = advice_response.choices[0].message['content'].strip()
             
         logging.info(f"Chat response generated successfully")
         
@@ -210,18 +213,16 @@ async def get_assessment_advice(request: Request):
         elif language == "ru":
             prompt += "\nPlease respond in Russian."
             
-        # Get response from OpenAI
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+        # Get response from OpenAI using our helper
+        advice = create_chat_completion(
             messages=[
                 {"role": "system", "content": "You are a medical specialist providing comprehensive rehabilitation advice for stroke patients."},
                 {"role": "user", "content": prompt}
             ],
+            model="gpt-3.5-turbo",
             max_tokens=550,
             temperature=0.7
         )
-        
-        advice = response.choices[0].message['content'].strip()
         
         return ChatResponse(
             response="Assessment advice generated successfully.", 
